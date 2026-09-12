@@ -369,6 +369,23 @@
     gap: 10px;
   }
 
+  .icon-toggle-btn {
+    background: rgba(245, 196, 81, 0.12);
+    border: 1px solid var(--gold);
+    color: var(--gold-bright);
+    padding: 7px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .icon-toggle-btn:hover { background: rgba(245, 196, 81, 0.22); }
+
   .music-toggle-btn {
     background: rgba(245, 196, 81, 0.12);
     border: 1px solid var(--gold);
@@ -946,6 +963,50 @@
     100% { transform: translateY(-105vh) translateX(var(--drift, 40px)); opacity: 0; }
   }
 
+  /* ========================================================
+     LIGHT MODE — a bright, warm boutique-hotel alternative
+     ======================================================== */
+  html[data-mode="light"] {
+    --card-bg: rgba(255, 251, 242, 0.92);
+    --card-border: rgba(180, 130, 20, 0.32);
+    --text-main: #2a1c0f;
+    --text-muted: #6b5842;
+  }
+  html[data-mode="light"] body { background: #f6efe1; }
+  html[data-mode="light"] .bg-tint {
+    background: linear-gradient(180deg, rgba(255, 248, 235, 0.5), rgba(255, 248, 235, 0.72)) !important;
+    mix-blend-mode: normal;
+  }
+  html[data-mode="light"] .bg-vignette {
+    background:
+      radial-gradient(ellipse at center, rgba(255,248,235,0) 35%, rgba(246,239,225,0.55) 100%),
+      linear-gradient(180deg, rgba(246,239,225,0.6) 0%, rgba(246,239,225,0.1) 18%, rgba(246,239,225,0.2) 70%, rgba(246,239,225,0.7) 100%);
+  }
+  html[data-mode="light"] .bg-photo-layer { filter: saturate(1.05) brightness(0.95); }
+
+  html[data-mode="light"] .main-hero-title,
+  html[data-mode="light"] .day-title-text h3,
+  html[data-mode="light"] .activity-heading,
+  html[data-mode="light"] .primary-hotel-card h5,
+  html[data-mode="light"] .portal-title { color: #2a1c0f; }
+
+  html[data-mode="light"] .hero-spanish-quote { color: #4a3520; text-shadow: none; }
+  html[data-mode="light"] .day-title-text p { color: var(--gold-dark); }
+  html[data-mode="light"] .brand-sub { color: #6b5842; }
+  html[data-mode="light"] header.top-appbar { background: rgba(255, 251, 242, 0.85); }
+  html[data-mode="light"] .day-scroll-nav { background: rgba(255, 251, 242, 0.78); }
+  html[data-mode="light"] .hotel-box-styled { background: rgba(255, 255, 255, 0.55); }
+  html[data-mode="light"] .day-card-header { background: rgba(0, 0, 0, 0.025); }
+  html[data-mode="light"] .nav-day-chip { color: #2a1c0f; background: rgba(255, 255, 255, 0.55); }
+  html[data-mode="light"] .nav-day-chip.active { color: #0b1714; }
+  html[data-mode="light"] .hotel-link-chip { color: #2a1c0f; background: rgba(0, 0, 0, 0.035); }
+  html[data-mode="light"] .hotel-link-chip:hover, html[data-mode="light"] .hotel-link-chip:active { color: #0b1714; }
+  html[data-mode="light"] .swipe-text { color: var(--gold-dark); }
+  html[data-mode="light"] .icon-toggle-btn { color: var(--gold-dark); }
+
+  /* Fireflies read a touch softer against a bright page */
+  html[data-mode="light"] #magic-canvas { opacity: 0.55; }
+
   /* Responsive Adjustments for iPhone */
   @media (max-width: 820px) {
     .day-card-grid {
@@ -976,8 +1037,8 @@
 <!-- AMBIENT MAGIC LAYER: fireflies drifting over the whole journey -->
 <canvas id="magic-canvas"></canvas>
 
-<!-- AUDIO ELEMENT (Romantic Spanish Acoustic Guitar) -->
-<audio id="romantic-audio" preload="auto" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3"></audio>
+<!-- BACKGROUND MUSIC: the couple's own copy, embedded directly so the file is self-contained -->
+<audio id="romantic-audio" preload="auto" loop src="background-music.mp3"></audio>
 
 <!-- ========================================================
      3D GRAND BALINESE ENTRANCE DOOR OVERLAY
@@ -997,12 +1058,12 @@
     <h1 class="portal-title">Our Escape Plan<span class="portal-script">Bali, 2026</span></h1>
     <div class="ornament-divider"><span></span></div>
     <p class="portal-spanish-love">
-      "Un viaje inolvidable solo para nosotros dos: perdiéndonos entre las selvas sagradas de Ubud, cabalgando hacia el atardecer, soñando frente a las aguas turquesas del océano y tocando las nubes en los volcanes de Bali. Una promesa, mil recuerdos y tú."
+      "<span class="i18n" data-en="An unforgettable journey just for the two of us: losing ourselves among Ubud's sacred jungles, riding toward the sunset, dreaming before the ocean's turquoise waters, and touching the clouds over Bali's volcanoes. One promise, a thousand memories, and you.">Un viaje inolvidable solo para nosotros dos: perdiéndonos entre las selvas sagradas de Ubud, cabalgando hacia el atardecer, soñando frente a las aguas turquesas del océano y tocando las nubes en los volcanes de Bali. Una promesa, mil recuerdos y tú.</span>"
     </p>
     <button class="btn-disappear" onclick="openMagicDoors()">
       Begin the Journey
     </button>
-    <p class="portal-subcopy">Toca para comenzar, juntos</p>
+    <p class="portal-subcopy"><span class="i18n" data-en="Tap to begin, together">Toca para comenzar, juntos</span></p>
   </div>
 </div>
 
@@ -1013,50 +1074,58 @@
     <span class="brand-sub">28 Sep – 6 Oct 2026 • Bali</span>
   </div>
   <div class="header-actions">
+    <button class="icon-toggle-btn" id="mode-btn" onclick="toggleMode()">
+      <span id="mode-icon">🌙</span>
+      <span id="mode-text">Dark</span>
+    </button>
+    <button class="icon-toggle-btn" id="lang-btn" onclick="toggleLanguage()">
+      <span>🌐</span>
+      <span id="lang-text">EN</span>
+    </button>
     <button class="music-toggle-btn" id="music-btn" onclick="toggleRomanticMusic()">
       <span id="music-icon">🎵</span>
-      <span id="music-text">Música</span>
+      <span id="music-text"><span class="i18n" data-en="Music">Música</span></span>
     </button>
   </div>
 </header>
 
 <!-- HERO SECTION -->
 <section class="hero-section">
-  <span class="love-badge">Solo Tú y Yo • 7 Días Mágicos</span>
-  <h1 class="main-hero-title">Nuestra Gran Aventura</h1>
+  <span class="love-badge"><span class="i18n" data-en="Just the Two of Us • 7 Magical Days">Solo Tú y Yo • 7 Días Mágicos</span></span>
+  <h1 class="main-hero-title"><span class="i18n" data-en="Our Great Adventure">Nuestra Gran Aventura</span></h1>
   <p class="hero-spanish-quote">
-    "Que el mundo se detenga mientras recorremos arrozales infinitos, olas que besan acantilados y noches estrelladas junto a la caldera del volcán."
+    "<span class="i18n" data-en="Let the world stop while we wander through endless rice fields, waves that kiss the cliffs, and starlit nights beside the volcano's caldera.">Que el mundo se detenga mientras recorremos arrozales infinitos, olas que besan acantilados y noches estrelladas junto a la caldera del volcán.</span>"
   </p>
 
   <!-- COUNTDOWN CLOCK -->
   <div class="countdown-box">
     <div class="countdown-title">
       <span>⏳</span>
-      <span>Tiempo Restante Para Nuestro Vuelo EY475</span>
+      <span><span class="i18n" data-en="Time Remaining Until Our Flight EY475">Tiempo Restante Para Nuestro Vuelo EY475</span></span>
     </div>
     <div class="clock-grid">
       <div class="clock-segment">
         <div class="clock-num" id="cd-days">--</div>
-        <div class="clock-label">Días</div>
+        <div class="clock-label"><span class="i18n" data-en="Days">Días</span></div>
       </div>
       <div class="clock-segment">
         <div class="clock-num" id="cd-hours">--</div>
-        <div class="clock-label">Horas</div>
+        <div class="clock-label"><span class="i18n" data-en="Hours">Horas</span></div>
       </div>
       <div class="clock-segment">
         <div class="clock-num" id="cd-minutes">--</div>
-        <div class="clock-label">Minutos</div>
+        <div class="clock-label"><span class="i18n" data-en="Minutes">Minutos</span></div>
       </div>
       <div class="clock-segment">
         <div class="clock-num" id="cd-seconds">--</div>
-        <div class="clock-label">Segundos</div>
+        <div class="clock-label"><span class="i18n" data-en="Seconds">Segundos</span></div>
       </div>
     </div>
   </div>
 
   <!-- SWIPE DOWN ARROW -->
   <a href="#day-1" class="swipe-prompt" onclick="smoothScrollTo('day-1')">
-    <span class="swipe-text">Desliza para comenzar</span>
+    <span class="swipe-text"><span class="i18n" data-en="Scroll to begin">Desliza para comenzar</span></span>
     <div class="arrows-container">
       <div class="arrow-chevron"></div>
       <div class="arrow-chevron"></div>
@@ -1070,10 +1139,10 @@
   <button class="nav-day-chip active" onclick="activateDay('day-1', this)">29 Sep (Mason & Cretya)</button>
   <button class="nav-day-chip" onclick="activateDay('day-2', this)">30 Sep (Alas Harum)</button>
   <button class="nav-day-chip" onclick="activateDay('day-3', this)">1 Oct (Besakih & Spa)</button>
-  <button class="nav-day-chip" onclick="activateDay('day-4', this)">2 Oct (Caballos & Uluwatu)</button>
+  <button class="nav-day-chip" onclick="activateDay('day-4', this)"><span class="i18n" data-en="2 Oct (Horseback &amp; Uluwatu)">2 Oct (Caballos & Uluwatu)</span></button>
   <button class="nav-day-chip" onclick="activateDay('day-5', this)">3 Oct (Karma Beach)</button>
   <button class="nav-day-chip" onclick="activateDay('day-6', this)">4 Oct (Kelingking)</button>
-  <button class="nav-day-chip" onclick="activateDay('day-7', this)">5 Oct (Lunamoon & Regreso)</button>
+  <button class="nav-day-chip" onclick="activateDay('day-7', this)"><span class="i18n" data-en="5 Oct (Lunamoon &amp; Return)">5 Oct (Lunamoon & Regreso)</span></button>
 </div>
 
 <!-- ITINERARY MAIN FEED -->
@@ -1085,42 +1154,42 @@
       <div class="day-header-left">
         <span class="date-badge">29 Sep</span>
         <div class="day-title-text">
-          <h3>DÍA 1 • Mason Elephant Park & Cretya Sunset 🐘🌅</h3>
+          <h3><span class="i18n" data-en="DAY 1 • Mason Elephant Park &amp; Cretya Sunset">DÍA 1 • Mason Elephant Park & Cretya Sunset</span> 🐘🌅</h3>
           <p>Taro Sanctuary Wildlife & Golden Hour Cocktails</p>
         </div>
       </div>
-      <span class="stay-phase-pill">Ubud • Noche 2 de 4</span>
+      <span class="stay-phase-pill"><span class="i18n" data-en="Ubud • Night 2 of 4">Ubud • Noche 2 de 4</span></span>
     </div>
     <div class="day-card-grid">
       <div class="act-column">
-        <h4><span>🗓️</span> Itinerario de Hoy</h4>
+        <h4><span>🗓️</span> <span class="i18n" data-en="Today's Itinerary">Itinerario de Hoy</span></h4>
         <div class="activity-item">
-          <div class="activity-time">Mañana</div>
+          <div class="activity-time"><span class="i18n" data-en="Morning">Mañana</span></div>
           <div class="activity-heading">🐘 Mason Elephant Park & Lodge</div>
-          <div class="activity-desc">Interacción ética con elefantes rescatados en Taro, jardines botánicos tropicales y almuerzo junto al lago.</div>
+          <div class="activity-desc"><span class="i18n" data-en="Ethical interaction with rescued elephants in Taro, tropical botanical gardens, and lunch by the lake.">Interacción ética con elefantes rescatados en Taro, jardines botánicos tropicales y almuerzo junto al lago.</span></div>
         </div>
         <div class="activity-item">
-          <div class="activity-time">Tarde</div>
-          <div class="activity-heading">🚗 Rumbo a Tegallalang</div>
-          <div class="activity-desc">Paseo escénico entre palmeras gigantes en dirección al cañón de Cretya.</div>
+          <div class="activity-time"><span class="i18n" data-en="Afternoon">Tarde</span></div>
+          <div class="activity-heading"><span class="i18n" data-en="🚗 On to Tegallalang">🚗 Rumbo a Tegallalang</span></div>
+          <div class="activity-desc"><span class="i18n" data-en="Scenic drive among giant palms toward Cretya canyon.">Paseo escénico entre palmeras gigantes en dirección al cañón de Cretya.</span></div>
         </div>
         <div class="activity-item">
-          <div class="activity-time">Atardecer & Noche</div>
-          <div class="activity-heading">🌅 Cretya Sunset & Cócteles</div>
-          <div class="activity-desc">Piscinas infinitas escalonadas, música lounge, vistas a las terrazas de arroz y fotos de pareja sin prisas. Regreso a la villa.</div>
+          <div class="activity-time"><span class="i18n" data-en="Sunset &amp; Evening">Atardecer & Noche</span></div>
+          <div class="activity-heading"><span class="i18n" data-en="🌅 Cretya Sunset &amp; Cocktails">🌅 Cretya Sunset & Cócteles</span></div>
+          <div class="activity-desc"><span class="i18n" data-en="Tiered infinity pools, lounge music, rice-terrace views, and unhurried couple's photos. Return to the villa.">Piscinas infinitas escalonadas, música lounge, vistas a las terrazas de arroz y fotos de pareja sin prisas. Regreso a la villa.</span></div>
         </div>
       </div>
 
       <div class="hotel-column">
-        <h4><span>🏨</span> Villas Recomendadas en Ubud</h4>
+        <h4><span>🏨</span> <span class="i18n" data-en="Recommended Villas in Ubud">Villas Recomendadas en Ubud</span></h4>
         <div class="hotel-box-styled">
           <div class="primary-hotel-card">
             <h5>Villa Bulan Mas / Soodama Villas</h5>
-            <span class="hotel-duration-tag">Reservar: 4 Noches (28 Sep – 2 Oct)</span>
-            <p class="activity-desc">Piscina privada 1BR, desayuno Balinés incluido (~AED 390/noche). Ubicación ideal en Tegallalang.</p>
+            <span class="hotel-duration-tag"><span class="i18n" data-en="Book: 4 Nights (28 Sep – 2 Oct)">Reservar: 4 Noches (28 Sep – 2 Oct)</span></span>
+            <p class="activity-desc"><span class="i18n" data-en="Private 1BR pool, Balinese breakfast included (~AED 390/night). Ideal location in Tegallalang.">Piscina privada 1BR, desayuno Balinés incluido (~AED 390/noche). Ubicación ideal en Tegallalang.</span></p>
           </div>
 
-          <span class="hotel-scroll-title">Tus Opciones para sus 3 días:</span>
+          <span class="hotel-scroll-title"><span class="i18n" data-en="Your Options for These 3 Days:">Tus Opciones para sus 3 días:</span></span>
           <div class="hotel-options-pills">
             <a href="https://www.booking.com/searchresults.html?ss=Pinggala+Villa+Ubud" target="_blank" class="hotel-link-chip">Pinggala Villa Ubud ↗</a>
             <a href="https://www.booking.com/searchresults.html?ss=Ubud+Suarga+Private+Pool+Villa" target="_blank" class="hotel-link-chip">Ubud Suarga Private Pool ↗</a>
@@ -1136,7 +1205,7 @@
           </div>
 
           <a href="https://www.booking.com/searchresults.html?ss=Tegallalang+Private+Pool+Villa" target="_blank" class="btn-book-primary">
-            Explorar Villas en Booking ↗
+            <span class="i18n" data-en="Explore Villas on Booking ↗">Explorar Villas en Booking ↗</span>
           </a>
         </div>
       </div>
@@ -1149,41 +1218,41 @@
       <div class="day-header-left">
         <span class="date-badge">30 Sep</span>
         <div class="day-title-text">
-          <h3>DÍA 2 • Alas Harum + Cretya Ubud 🌾🏊‍♀️</h3>
-          <p>Terrazas Esculpidas, Columpios Gigantes & Relax Total</p>
+          <h3><span class="i18n" data-en="DAY 2 • Alas Harum + Cretya Ubud">DÍA 2 • Alas Harum + Cretya Ubud</span> 🌾🏊‍♀️</h3>
+          <p><span class="i18n" data-en="Sculpted Terraces, Giant Swings &amp; Total Relaxation">Terrazas Esculpidas, Columpios Gigantes & Relax Total</span></p>
         </div>
       </div>
-      <span class="stay-phase-pill">Ubud • Noche 3 de 4</span>
+      <span class="stay-phase-pill"><span class="i18n" data-en="Ubud • Night 3 of 4">Ubud • Noche 3 de 4</span></span>
     </div>
     <div class="day-card-grid">
       <div class="act-column">
-        <h4><span>🗓️</span> Itinerario de Hoy</h4>
+        <h4><span>🗓️</span> <span class="i18n" data-en="Today's Itinerary">Itinerario de Hoy</span></h4>
         <div class="activity-item">
-          <div class="activity-time">Mañana</div>
+          <div class="activity-time"><span class="i18n" data-en="Morning">Mañana</span></div>
           <div class="activity-heading">🌾 Alas Harum Bali</div>
-          <div class="activity-desc">Paseo matutino por las terrazas verdes, puente de cristal y columpio de pareja sobre el valle.</div>
+          <div class="activity-desc"><span class="i18n" data-en="Morning walk through the green terraces, glass bridge, and couple's swing over the valley.">Paseo matutino por las terrazas verdes, puente de cristal y columpio de pareja sobre el valle.</span></div>
         </div>
         <div class="activity-item">
-          <div class="activity-time">Tarde</div>
+          <div class="activity-time"><span class="i18n" data-en="Afternoon">Tarde</span></div>
           <div class="activity-heading">🏊‍♀️ Cretya Ubud Day Club</div>
-          <div class="activity-desc">Disfrutar del club de día, camas balinesas y baños refrescantes en sus niveles de agua.</div>
+          <div class="activity-desc"><span class="i18n" data-en="Enjoy the day club, Balinese beds, and refreshing pools at its water levels.">Disfrutar del club de día, camas balinesas y baños refrescantes en sus niveles de agua.</span></div>
         </div>
         <div class="activity-item">
-          <div class="activity-time">Noche</div>
-          <div class="activity-heading">🍽️ Cena Romántica en Ubud</div>
-          <div class="activity-desc">Cena relajada cerca del centro de Ubud sin prisas ni traslados pesados.</div>
+          <div class="activity-time"><span class="i18n" data-en="Evening">Noche</span></div>
+          <div class="activity-heading"><span class="i18n" data-en="🍽️ Romantic Dinner in Ubud">🍽️ Cena Romántica en Ubud</span></div>
+          <div class="activity-desc"><span class="i18n" data-en="Relaxed dinner near central Ubud, no rush and no heavy transfers.">Cena relajada cerca del centro de Ubud sin prisas ni traslados pesados.</span></div>
         </div>
       </div>
 
       <div class="hotel-column">
-        <h4><span>🏨</span> Tu Alojamiento</h4>
+        <h4><span>🏨</span> <span class="i18n" data-en="Your Accommodation">Tu Alojamiento</span></h4>
         <div class="hotel-box-styled">
           <div class="primary-hotel-card">
-            <h5>Misma Villa en Ubud</h5>
-            <span class="hotel-duration-tag">Noche 3 de 4 en la misma propiedad</span>
-            <p class="activity-desc">Sin cambios de hotel. Disfruten de la tarde y de su piscina privada sin tener que empacar maletas.</p>
+            <h5><span class="i18n" data-en="Same Villa in Ubud">Misma Villa en Ubud</span></h5>
+            <span class="hotel-duration-tag"><span class="i18n" data-en="Night 3 of 4 at the same property">Noche 3 de 4 en la misma propiedad</span></span>
+            <p class="activity-desc"><span class="i18n" data-en="No hotel changes. Enjoy the afternoon and your private pool without packing a bag.">Sin cambios de hotel. Disfruten de la tarde y de su piscina privada sin tener que empacar maletas.</span></p>
           </div>
-          <span class="hotel-scroll-title">Alternativas disponibles:</span>
+          <span class="hotel-scroll-title"><span class="i18n" data-en="Available Alternatives:">Alternativas disponibles:</span></span>
           <div class="hotel-options-pills">
             <a href="https://www.booking.com/searchresults.html?ss=Ubud+Suarga+Private+Pool+Villa" target="_blank" class="hotel-link-chip">Ubud Suarga Villa ↗</a>
             <a href="https://www.booking.com/searchresults.html?ss=Dukuh+Sebatu+Villa" target="_blank" class="hotel-link-chip">Dukuh Sebatu Villa ↗</a>
@@ -1191,7 +1260,7 @@
             <a href="https://www.booking.com/searchresults.html?ss=SUSI+Villas+Ubud" target="_blank" class="hotel-link-chip">SUSI Villas ↗</a>
           </div>
           <a href="https://www.booking.com/hotel/id/komaneka-at-bisma.html" target="_blank" class="btn-book-primary">
-            Ver Detalles de la Villa ↗
+            <span class="i18n" data-en="View Villa Details ↗">Ver Detalles de la Villa ↗</span>
           </a>
         </div>
       </div>
@@ -1204,48 +1273,48 @@
       <div class="day-header-left">
         <span class="date-badge">1 Oct</span>
         <div class="day-title-text">
-          <h3>DÍA 3 • Templos Sagrados: Besakih & Kehen 🛕✨</h3>
-          <p>Montañas, Cultura Milenaria & Masaje Tradicional en Pareja</p>
+          <h3><span class="i18n" data-en="DAY 3 • Sacred Temples: Besakih &amp; Kehen">DÍA 3 • Templos Sagrados: Besakih & Kehen</span> 🛕✨</h3>
+          <p><span class="i18n" data-en="Mountains, Ancient Culture &amp; Traditional Couples' Massage">Montañas, Cultura Milenaria & Masaje Tradicional en Pareja</span></p>
         </div>
       </div>
-      <span class="stay-phase-pill">Ubud • Última Noche</span>
+      <span class="stay-phase-pill"><span class="i18n" data-en="Ubud • Last Night">Ubud • Última Noche</span></span>
     </div>
     <div class="day-card-grid">
       <div class="act-column">
-        <h4><span>🗓️</span> Itinerario de Hoy</h4>
+        <h4><span>🗓️</span> <span class="i18n" data-en="Today's Itinerary">Itinerario de Hoy</span></h4>
         <div class="activity-item">
-          <div class="activity-time">Mañana</div>
+          <div class="activity-time"><span class="i18n" data-en="Morning">Mañana</span></div>
           <div class="activity-heading">🛕 Templo Madre Besakih</div>
-          <div class="activity-desc">El templo más imponente en las faldas del sagrado Monte Agung, seguido de un almuerzo panorámico.</div>
+          <div class="activity-desc"><span class="i18n" data-en="The most imposing temple on the slopes of sacred Mount Agung, followed by a panoramic lunch.">El templo más imponente en las faldas del sagrado Monte Agung, seguido de un almuerzo panorámico.</span></div>
         </div>
         <div class="activity-item">
-          <div class="activity-time">Mediodía</div>
+          <div class="activity-time"><span class="i18n" data-en="Midday">Mediodía</span></div>
           <div class="activity-heading">✨ Pura Kehen (Bangli)</div>
-          <div class="activity-desc">Escaleras de piedra tallada y árboles sagrados banyans de más de 300 años de historia.</div>
+          <div class="activity-desc"><span class="i18n" data-en="Carved stone staircases and sacred banyan trees more than 300 years old.">Escaleras de piedra tallada y árboles sagrados banyans de más de 300 años de historia.</span></div>
         </div>
         <div class="activity-item">
-          <div class="activity-time">Tarde / Noche</div>
-          <div class="activity-heading">🌸 Spa & Baño de Flores para Parejas</div>
-          <div class="activity-desc">2 horas de masaje Balinés y baño de pétalos. Empacar maletas listos para el sur.</div>
+          <div class="activity-time"><span class="i18n" data-en="Afternoon / Evening">Tarde / Noche</span></div>
+          <div class="activity-heading"><span class="i18n" data-en="🌸 Spa &amp; Flower Bath for Couples">🌸 Spa & Baño de Flores para Parejas</span></div>
+          <div class="activity-desc"><span class="i18n" data-en="2 hours of Balinese massage and a petal bath. Bags packed, ready for the south.">2 horas de masaje Balinés y baño de pétalos. Empacar maletas listos para el sur.</span></div>
         </div>
       </div>
 
       <div class="hotel-column">
-        <h4><span>🏨</span> Tu Alojamiento</h4>
+        <h4><span>🏨</span> <span class="i18n" data-en="Your Accommodation">Tu Alojamiento</span></h4>
         <div class="hotel-box-styled">
           <div class="primary-hotel-card">
-            <h5>Última Noche en Ubud</h5>
-            <span class="hotel-duration-tag">Check-out mañana 2 de Octubre</span>
-            <p class="activity-desc">Descansen profundamente. Mañana comienza tu etapa especial del viaje rumbo a Uluwatu con caballos.</p>
+            <h5><span class="i18n" data-en="Last Night in Ubud">Última Noche en Ubud</span></h5>
+            <span class="hotel-duration-tag"><span class="i18n" data-en="Check-out tomorrow, 2 October">Check-out mañana 2 de Octubre</span></span>
+            <p class="activity-desc"><span class="i18n" data-en="Rest deeply. Tomorrow begins the special stage of the trip, heading to Uluwatu on horseback.">Descansen profundamente. Mañana comienza tu etapa especial del viaje rumbo a Uluwatu con caballos.</span></p>
           </div>
-          <span class="hotel-scroll-title">Otras opciones en Ubud:</span>
+          <span class="hotel-scroll-title"><span class="i18n" data-en="Other Options in Ubud:">Otras opciones en Ubud:</span></span>
           <div class="hotel-options-pills">
             <a href="https://www.booking.com/searchresults.html?ss=Ubud+Mayura+Private+Pool+Villa" target="_blank" class="hotel-link-chip">Ubud Mayura ↗</a>
             <a href="https://www.booking.com/searchresults.html?ss=Nandikara+Villa+Ubud" target="_blank" class="hotel-link-chip">Nandikara Villa ↗</a>
             <a href="https://www.booking.com/searchresults.html?ss=The+Kayuan+Lumbur+Resort+Ubud" target="_blank" class="hotel-link-chip">The Kayuan Lumbur ↗</a>
           </div>
           <a href="https://www.booking.com/searchresults.html?ss=Ubud+Villas" target="_blank" class="btn-book-primary">
-            Confirmar Reserva ↗
+            <span class="i18n" data-en="Confirm Booking ↗">Confirmar Reserva ↗</span>
           </a>
         </div>
       </div>
@@ -1258,42 +1327,42 @@
       <div class="day-header-left">
         <span class="date-badge" style="background: #ff9800; color: #000;">2 Oct</span>
         <div class="day-title-text">
-          <h3>YOUR DAY 1 • Paseo a Caballo & Rumbo a Uluwatu 🐎❤️</h3>
-          <p>Arrozales → Campo Balinés → Playa al Atardecer → Villa en el Sur</p>
+          <h3><span class="i18n" data-en="YOUR DAY 1 • Horseback Ride &amp; On to Uluwatu">YOUR DAY 1 • Paseo a Caballo & Rumbo a Uluwatu</span> 🐎❤️</h3>
+          <p><span class="i18n" data-en="Rice Fields → Balinese Countryside → Sunset Beach → Villa in the South">Arrozales → Campo Balinés → Playa al Atardecer → Villa en el Sur</span></p>
         </div>
       </div>
-      <span class="stay-phase-pill" style="border-color: #ff9800; color: #ffb74d;">Uluwatu • Noche 1 de 3</span>
+      <span class="stay-phase-pill" style="border-color: #ff9800; color: #ffb74d;"><span class="i18n" data-en="Uluwatu • Night 1 of 3">Uluwatu • Noche 1 de 3</span></span>
     </div>
     <div class="day-card-grid">
       <div class="act-column">
-        <h4><span>🗓️</span> Tu Día Especial</h4>
+        <h4><span>🗓️</span> <span class="i18n" data-en="Your Special Day">Tu Día Especial</span></h4>
         <div class="activity-item" style="border-left-color: #ff9800;">
-          <div class="activity-time">Mañana</div>
-          <div class="activity-heading">☕ Desayuno & Check-out de Ubud</div>
-          <div class="activity-desc">Salida con el chofer privado y equipaje en el auto rumbo a la costa.</div>
+          <div class="activity-time"><span class="i18n" data-en="Morning">Mañana</span></div>
+          <div class="activity-heading"><span class="i18n" data-en="☕ Breakfast &amp; Check-out from Ubud">☕ Desayuno & Check-out de Ubud</span></div>
+          <div class="activity-desc"><span class="i18n" data-en="Departure with your private driver, luggage loaded, heading to the coast.">Salida con el chofer privado y equipaje en el auto rumbo a la costa.</span></div>
         </div>
         <div class="activity-item" style="border-left-color: #ff9800;">
-          <div class="activity-time">Tarde Destacada</div>
-          <div class="activity-heading">🐎 Paseo a Caballo Campiña y Playa</div>
-          <div class="activity-desc">Paseo romántico a caballo cruzando arrozales y aldeas tradicionales hasta salir a la playa en pleno atardecer.</div>
+          <div class="activity-time"><span class="i18n" data-en="Featured Afternoon">Tarde Destacada</span></div>
+          <div class="activity-heading"><span class="i18n" data-en="🐎 Countryside &amp; Beach Horseback Ride">🐎 Paseo a Caballo Campiña y Playa</span></div>
+          <div class="activity-desc"><span class="i18n" data-en="Romantic horseback ride through rice fields and traditional villages, arriving at the beach right at sunset.">Paseo romántico a caballo cruzando arrozales y aldeas tradicionales hasta salir a la playa en pleno atardecer.</span></div>
         </div>
         <div class="activity-item" style="border-left-color: #ff9800;">
-          <div class="activity-time">Noche</div>
-          <div class="activity-heading">🏨 Check-in en Uluwatu & Cena</div>
-          <div class="activity-desc">Llegada a tu villa en el sur de Bali (Pecatu / Bingin) y cena íntima.</div>
+          <div class="activity-time"><span class="i18n" data-en="Evening">Noche</span></div>
+          <div class="activity-heading"><span class="i18n" data-en="🏨 Check-in at Uluwatu &amp; Dinner">🏨 Check-in en Uluwatu & Cena</span></div>
+          <div class="activity-desc"><span class="i18n" data-en="Arrival at your villa in south Bali (Pecatu / Bingin) and an intimate dinner.">Llegada a tu villa en el sur de Bali (Pecatu / Bingin) y cena íntima.</span></div>
         </div>
       </div>
 
       <div class="hotel-column">
-        <h4><span>🏝️</span> Hoteles Seleccionados para Ti</h4>
+        <h4><span>🏝️</span> <span class="i18n" data-en="Hotels Selected for You">Hoteles Seleccionados para Ti</span></h4>
         <div class="hotel-box-styled">
           <div class="primary-hotel-card">
             <h5>ONAYA Bali Resort / PinkCoco</h5>
-            <span class="hotel-duration-tag">Reservar: 3 Noches (2 Oct – 5 Oct)</span>
-            <p class="activity-desc">Objetivo: AED 250–500/noche. Estilo boutique romántico, cerca de Karma Beach y los mejores acantilados.</p>
+            <span class="hotel-duration-tag"><span class="i18n" data-en="Book: 3 Nights (2 Oct – 5 Oct)">Reservar: 3 Noches (2 Oct – 5 Oct)</span></span>
+            <p class="activity-desc"><span class="i18n" data-en="Target: AED 250–500/night. Romantic boutique style, close to Karma Beach and the best cliffs.">Objetivo: AED 250–500/noche. Estilo boutique romántico, cerca de Karma Beach y los mejores acantilados.</span></p>
           </div>
 
-          <span class="hotel-scroll-title">Tus 4 Opciones para tus días:</span>
+          <span class="hotel-scroll-title"><span class="i18n" data-en="Your 4 Options for These Days:">Tus 4 Opciones para tus días:</span></span>
           <div class="hotel-options-pills">
             <a href="https://www.booking.com/searchresults.html?ss=ONAYA+Bali+Resort" target="_blank" class="hotel-link-chip" style="border-color: #ffb74d;">ONAYA Bali Resort ↗</a>
             <a href="https://www.booking.com/searchresults.html?ss=Swiss-Belresort+Pecatu" target="_blank" class="hotel-link-chip" style="border-color: #ffb74d;">Swiss-Belresort Pecatu ↗</a>
@@ -1302,7 +1371,7 @@
           </div>
 
           <a href="https://www.booking.com/searchresults.html?ss=Uluwatu+Boutique+Hotels" target="_blank" class="btn-book-primary" style="background: linear-gradient(135deg, #ffb74d, #ff9800);">
-            Ver Opciones de Uluwatu ↗
+            <span class="i18n" data-en="View Uluwatu Options ↗">Ver Opciones de Uluwatu ↗</span>
           </a>
         </div>
       </div>
@@ -1315,41 +1384,41 @@
       <div class="day-header-left">
         <span class="date-badge" style="background: #00bcd4; color: #000;">3 Oct</span>
         <div class="day-title-text">
-          <h3>YOUR DAY 2 • Karma Beach & Lujo Lento 🏖️❤️</h3>
-          <p>Funicular al Acantilado, Aguas Turquesas & Atardecer Privado</p>
+          <h3><span class="i18n" data-en="YOUR DAY 2 • Karma Beach &amp; Slow Luxury">YOUR DAY 2 • Karma Beach & Lujo Lento</span> 🏖️❤️</h3>
+          <p><span class="i18n" data-en="Cliffside Funicular, Turquoise Waters &amp; Private Sunset">Funicular al Acantilado, Aguas Turquesas & Atardecer Privado</span></p>
         </div>
       </div>
-      <span class="stay-phase-pill" style="border-color: #00bcd4; color: #80deea;">Uluwatu • Noche 2 de 3</span>
+      <span class="stay-phase-pill" style="border-color: #00bcd4; color: #80deea;"><span class="i18n" data-en="Uluwatu • Night 2 of 3">Uluwatu • Noche 2 de 3</span></span>
     </div>
     <div class="day-card-grid">
       <div class="act-column">
-        <h4><span>🗓️</span> Tu Día de Playa</h4>
+        <h4><span>🗓️</span> <span class="i18n" data-en="Your Beach Day">Tu Día de Playa</span></h4>
         <div class="activity-item" style="border-left-color: #00bcd4;">
-          <div class="activity-time">Mañana</div>
-          <div class="activity-heading">😴 Dormir Hasta Tarde & Piscina</div>
-          <div class="activity-desc">Despertar sin alarmas, café con calma y piscina privada en la villa.</div>
+          <div class="activity-time"><span class="i18n" data-en="Morning">Mañana</span></div>
+          <div class="activity-heading"><span class="i18n" data-en="😴 Sleep In &amp; Pool">😴 Dormir Hasta Tarde & Piscina</span></div>
+          <div class="activity-desc"><span class="i18n" data-en="Wake up without alarms, unhurried coffee, and the villa's private pool.">Despertar sin alarmas, café con calma y piscina privada en la villa.</span></div>
         </div>
         <div class="activity-item" style="border-left-color: #00bcd4;">
-          <div class="activity-time">Tarde</div>
+          <div class="activity-time"><span class="i18n" data-en="Afternoon">Tarde</span></div>
           <div class="activity-heading">🏖️ Karma Beach Club</div>
-          <div class="activity-desc">Bajada en teleférico privado a la cala secreta. Aguas cristalinas, tumbonas, cócteles y fotos en la arena.</div>
+          <div class="activity-desc"><span class="i18n" data-en="Private funicular down to the secret cove. Crystal-clear waters, sun loungers, cocktails, and photos on the sand.">Bajada en teleférico privado a la cala secreta. Aguas cristalinas, tumbonas, cócteles y fotos en la arena.</span></div>
         </div>
         <div class="activity-item" style="border-left-color: #00bcd4;">
-          <div class="activity-time">Atardecer & Noche</div>
-          <div class="activity-heading">🌅 Atardecer Dorado & Cena Playera</div>
-          <div class="activity-desc">Cena romántica frente a las olas y regreso temprano para descansar para Kelingking.</div>
+          <div class="activity-time"><span class="i18n" data-en="Sunset &amp; Evening">Atardecer & Noche</span></div>
+          <div class="activity-heading"><span class="i18n" data-en="🌅 Golden Sunset &amp; Beachside Dinner">🌅 Atardecer Dorado & Cena Playera</span></div>
+          <div class="activity-desc"><span class="i18n" data-en="Romantic dinner facing the waves, then an early return to rest up for Kelingking.">Cena romántica frente a las olas y regreso temprano para descansar para Kelingking.</span></div>
         </div>
       </div>
 
       <div class="hotel-column">
-        <h4><span>🏨</span> Tu Alojamiento</h4>
+        <h4><span>🏨</span> <span class="i18n" data-en="Your Accommodation">Tu Alojamiento</span></h4>
         <div class="hotel-box-styled">
           <div class="primary-hotel-card">
-            <h5>Misma Base en Uluwatu</h5>
-            <span class="hotel-duration-tag">Noche 2 de 3 (Sin traslados)</span>
-            <p class="activity-desc">Regresen temprano después del atardecer. Mañana Nusa Penida requiere salir temprano.</p>
+            <h5><span class="i18n" data-en="Same Base in Uluwatu">Misma Base en Uluwatu</span></h5>
+            <span class="hotel-duration-tag"><span class="i18n" data-en="Night 2 of 3 (No transfers)">Noche 2 de 3 (Sin traslados)</span></span>
+            <p class="activity-desc"><span class="i18n" data-en="Head back early after sunset. Tomorrow's Nusa Penida trip means an early start.">Regresen temprano después del atardecer. Mañana Nusa Penida requiere salir temprano.</span></p>
           </div>
-          <span class="hotel-scroll-title">Tus Hoteles en el Sur:</span>
+          <span class="hotel-scroll-title"><span class="i18n" data-en="Your Hotels in the South:">Tus Hoteles en el Sur:</span></span>
           <div class="hotel-options-pills">
             <a href="https://www.booking.com/searchresults.html?ss=PinkCoco+Uluwatu" target="_blank" class="hotel-link-chip">PinkCoco Uluwatu ↗</a>
             <a href="https://www.booking.com/searchresults.html?ss=ONAYA+Bali+Resort" target="_blank" class="hotel-link-chip">ONAYA Bali Resort ↗</a>
@@ -1357,7 +1426,7 @@
             <a href="https://www.booking.com/searchresults.html?ss=Swiss-Belresort+Pecatu" target="_blank" class="hotel-link-chip">Swiss-Belresort ↗</a>
           </div>
           <a href="https://www.booking.com/searchresults.html?ss=Uluwatu+Boutique+Hotels" target="_blank" class="btn-book-primary">
-            Ver Mi Hotel en Uluwatu ↗
+            <span class="i18n" data-en="View My Uluwatu Hotel ↗">Ver Mi Hotel en Uluwatu ↗</span>
           </a>
         </div>
       </div>
@@ -1371,46 +1440,46 @@
         <span class="date-badge" style="background: #0288d1; color: #fff;">4 Oct</span>
         <div class="day-title-text">
           <h3>YOUR DAY 3 • Kelingking Beach / Nusa Penida 🦖🌊</h3>
-          <p>Lancha Rápida, Acantilado T-Rex, Broken Beach & Piscinas Naturales</p>
+          <p><span class="i18n" data-en="Speedboat, T-Rex Cliff, Broken Beach &amp; Natural Pools">Lancha Rápida, Acantilado T-Rex, Broken Beach & Piscinas Naturales</span></p>
         </div>
       </div>
-      <span class="stay-phase-pill" style="border-color: #0288d1; color: #81d4fa;">Uluwatu • Noche 3 de 3</span>
+      <span class="stay-phase-pill" style="border-color: #0288d1; color: #81d4fa;"><span class="i18n" data-en="Uluwatu • Night 3 of 3">Uluwatu • Noche 3 de 3</span></span>
     </div>
     <div class="day-card-grid">
       <div class="act-column">
-        <h4><span>🗓️</span> Tu Gran Aventura</h4>
+        <h4><span>🗓️</span> <span class="i18n" data-en="Your Big Adventure">Tu Gran Aventura</span></h4>
         <div class="activity-item" style="border-left-color: #0288d1;">
           <div class="activity-time">06:00 AM</div>
-          <div class="activity-heading">🚤 Cruce en Lancha Rápida desde Sanur</div>
-          <div class="activity-desc">Traslado privado y navegación de 40 minutos a Nusa Penida con 4x4 esperándolos.</div>
+          <div class="activity-heading"><span class="i18n" data-en="🚤 Speedboat Crossing from Sanur">🚤 Cruce en Lancha Rápida desde Sanur</span></div>
+          <div class="activity-desc"><span class="i18n" data-en="Private transfer and a 40-minute crossing to Nusa Penida, with a 4x4 waiting for you.">Traslado privado y navegación de 40 minutos a Nusa Penida con 4x4 esperándolos.</span></div>
         </div>
         <div class="activity-item" style="border-left-color: #0288d1;">
-          <div class="activity-time">Mañana Imprescindible</div>
-          <div class="activity-heading">🏝️ Mirador de Kelingking Beach</div>
-          <div class="activity-desc">La postal más icónica del mundo. Disfrutar de los miradores superiores sin bajar el peligroso sendero.</div>
+          <div class="activity-time"><span class="i18n" data-en="Unmissable Morning">Mañana Imprescindible</span></div>
+          <div class="activity-heading"><span class="i18n" data-en="🏝️ Kelingking Beach Viewpoint">🏝️ Mirador de Kelingking Beach</span></div>
+          <div class="activity-desc"><span class="i18n" data-en="The world's most iconic postcard view. Enjoy the upper viewpoints without descending the dangerous trail.">La postal más icónica del mundo. Disfrutar de los miradores superiores sin bajar el peligroso sendero.</span></div>
         </div>
         <div class="activity-item" style="border-left-color: #0288d1;">
-          <div class="activity-time">Tarde</div>
+          <div class="activity-time"><span class="i18n" data-en="Afternoon">Tarde</span></div>
           <div class="activity-heading">💧 Broken Beach & Angel's Billabong</div>
-          <div class="activity-desc">Arcos naturales de roca caliza y lagunas marinas antes del barco de regreso a las 16:30.</div>
+          <div class="activity-desc"><span class="i18n" data-en="Natural limestone arches and sea lagoons before the return boat at 4:30 PM.">Arcos naturales de roca caliza y lagunas marinas antes del barco de regreso a las 16:30.</span></div>
         </div>
       </div>
 
       <div class="hotel-column">
-        <h4><span>🏨</span> Tu Alojamiento</h4>
+        <h4><span>🏨</span> <span class="i18n" data-en="Your Accommodation">Tu Alojamiento</span></h4>
         <div class="hotel-box-styled">
           <div class="primary-hotel-card">
             <h5>Última Noche en Uluwatu</h5>
-            <span class="hotel-duration-tag">Check-out mañana 5 de Octubre</span>
-            <p class="activity-desc">Cena sencilla, descanso profundo. Mañana salimos con maletas hacia el volcán en Kintamani.</p>
+            <span class="hotel-duration-tag"><span class="i18n" data-en="Check-out tomorrow, 5 October">Check-out mañana 5 de Octubre</span></span>
+            <p class="activity-desc"><span class="i18n" data-en="Simple dinner, deep rest. Tomorrow we leave with our bags for the volcano in Kintamani.">Cena sencilla, descanso profundo. Mañana salimos con maletas hacia el volcán en Kintamani.</span></p>
           </div>
-          <span class="hotel-scroll-title">Tus opciones preferidas:</span>
+          <span class="hotel-scroll-title"><span class="i18n" data-en="Your Preferred Options:">Tus opciones preferidas:</span></span>
           <div class="hotel-options-pills">
             <a href="https://www.booking.com/searchresults.html?ss=ONAYA+Bali+Resort" target="_blank" class="hotel-link-chip">ONAYA Resort ↗</a>
             <a href="https://www.booking.com/searchresults.html?ss=Terra+Cottages+Bali" target="_blank" class="hotel-link-chip">Terra Cottages ↗</a>
           </div>
           <a href="https://www.booking.com/searchresults.html?ss=Uluwatu+Hotels" target="_blank" class="btn-book-primary">
-            Ver Mi Reserva en Uluwatu ↗
+            <span class="i18n" data-en="View My Uluwatu Booking ↗">Ver Mi Reserva en Uluwatu ↗</span>
           </a>
         </div>
       </div>
@@ -1423,53 +1492,53 @@
       <div class="day-header-left">
         <span class="date-badge" style="background: #9c27b0; color: #fff;">5–6 Oct</span>
         <div class="day-title-text">
-          <h3>YOUR DAY 4 • Kintamani + LUNAMOON & Regreso 🌋🍽️</h3>
-          <p>Vistas al Volcán Batur → Restaurante Lunamoon → Tránsito al Aeropuerto</p>
+          <h3><span class="i18n" data-en="YOUR DAY 4 • Kintamani + LUNAMOON &amp; Return">YOUR DAY 4 • Kintamani + LUNAMOON & Regreso</span> 🌋🍽️</h3>
+          <p><span class="i18n" data-en="Views of Mount Batur → Lunamoon Restaurant → Transit to the Airport">Vistas al Volcán Batur → Restaurante Lunamoon → Tránsito al Aeropuerto</span></p>
         </div>
       </div>
-      <span class="stay-phase-pill" style="border-color: #ba68c8; color: #e1bee7;">Tránsito Final</span>
+      <span class="stay-phase-pill" style="border-color: #ba68c8; color: #e1bee7;"><span class="i18n" data-en="Final Transit">Tránsito Final</span></span>
     </div>
     <div class="day-card-grid">
       <div class="act-column">
-        <h4><span>🗓️</span> El Gran Cierre del Viaje</h4>
+        <h4><span>🗓️</span> <span class="i18n" data-en="The Grand Finale of the Trip">El Gran Cierre del Viaje</span></h4>
         <div class="activity-item" style="border-left-color: #9c27b0;">
           <div class="activity-time">09:00 AM</div>
-          <div class="activity-heading">🚗 Uluwatu → Kintamani con Maletas</div>
-          <div class="activity-desc">Equipaje en el auto privado; ascenso hacia la cordillera fresca del cráter de Batur[cite: 1].</div>
+          <div class="activity-heading"><span class="i18n" data-en="🚗 Uluwatu → Kintamani with Luggage">🚗 Uluwatu → Kintamani con Maletas</span></div>
+          <div class="activity-desc"><span class="i18n" data-en="Luggage loaded in the private car; ascent toward the cool highlands of the Batur crater.">Equipaje en el auto privado; ascenso hacia la cordillera fresca del cráter de Batur[cite: 1].</span></div>
         </div>
         <div class="activity-item" style="border-left-color: #9c27b0;">
-          <div class="activity-time">12:30 – 15:30 Destacado</div>
+          <div class="activity-time"><span class="i18n" data-en="12:30 – 15:30 Featured">12:30 – 15:30 Destacado</span></div>
           <div class="activity-heading">🍽️ Restaurante LUNAMOON Kintamani</div>
-          <div class="activity-desc">Ubicado en la cresta de Penelokan con vistas panorámicas al volcán y lago[cite: 1]. Comida Thai/Asiática y cafés de altura[cite: 1].</div>
+          <div class="activity-desc"><span class="i18n" data-en="Set on the Penelokan ridge with panoramic views of the volcano and lake. Thai/Asian food and highland coffees.">Ubicado en la cresta de Penelokan con vistas panorámicas al volcán y lago[cite: 1]. Comida Thai/Asiática y cafés de altura[cite: 1].</span></div>
         </div>
         <div class="activity-item" style="border-left-color: #9c27b0;">
           <div class="activity-time">18:00 – 22:00</div>
-          <div class="activity-heading">🚗 Jimbaran: Ducha, Masaje & Cena</div>
-          <div class="activity-desc">Hotel de tránsito en Jimbaran/Tuban[cite: 1]. Ducha caliente, masaje previo al vuelo y cena de mariscos en la playa[cite: 1].</div>
+          <div class="activity-heading"><span class="i18n" data-en="🚗 Jimbaran: Shower, Massage &amp; Dinner">🚗 Jimbaran: Ducha, Masaje & Cena</span></div>
+          <div class="activity-desc"><span class="i18n" data-en="Transit hotel in Jimbaran/Tuban. Hot shower, pre-flight massage, and a seafood dinner on the beach.">Hotel de tránsito en Jimbaran/Tuban[cite: 1]. Ducha caliente, masaje previo al vuelo y cena de mariscos en la playa[cite: 1].</span></div>
         </div>
         <div class="activity-item" style="border-left-color: #9c27b0;">
           <div class="activity-time">01:30 AM (6 Oct)</div>
-          <div class="activity-heading">✈️ Vuelo Directo a Abu Dhabi</div>
-          <div class="activity-desc">Check-in cómodo en el aeropuerto DPS a las 22:30[cite: 1]. Vuelo directo a casa con el corazón lleno de recuerdos[cite: 1].</div>
+          <div class="activity-heading"><span class="i18n" data-en="✈️ Direct Flight to Abu Dhabi">✈️ Vuelo Directo a Abu Dhabi</span></div>
+          <div class="activity-desc"><span class="i18n" data-en="Comfortable check-in at DPS airport at 22:30. A direct flight home, hearts full of memories.">Check-in cómodo en el aeropuerto DPS a las 22:30[cite: 1]. Vuelo directo a casa con el corazón lleno de recuerdos[cite: 1].</span></div>
         </div>
       </div>
 
       <div class="hotel-column">
-        <h4><span>🛏️</span> Hotel de Tránsito (Última Noche)</h4>
+        <h4><span>🛏️</span> <span class="i18n" data-en="Transit Hotel (Last Night)">Hotel de Tránsito (Última Noche)</span></h4>
         <div class="hotel-box-styled" style="border-color: var(--gold);">
           <div class="primary-hotel-card">
-            <h5>Hotel de Tránsito (Jimbaran / Tuban)</h5>
-            <span class="hotel-duration-tag" style="background: rgba(245, 196, 81, 0.2); color: var(--gold-bright);">Presupuesto: AED 150–300</span>
-            <p class="activity-desc">A 10 min del aeropuerto DPS[cite: 1]. Ideal para ducharse, cambiarse y descansar antes de abordar el vuelo de la 01:30 AM[cite: 1].</p>
+            <h5><span class="i18n" data-en="Transit Hotel (Jimbaran / Tuban)">Hotel de Tránsito (Jimbaran / Tuban)</span></h5>
+            <span class="hotel-duration-tag" style="background: rgba(245, 196, 81, 0.2); color: var(--gold-bright);"><span class="i18n" data-en="Budget: AED 150–300">Presupuesto: AED 150–300</span></span>
+            <p class="activity-desc"><span class="i18n" data-en="10 minutes from DPS airport. Ideal for showering, changing, and resting before boarding the 01:30 AM flight.">A 10 min del aeropuerto DPS[cite: 1]. Ideal para ducharse, cambiarse y descansar antes de abordar el vuelo de la 01:30 AM[cite: 1].</span></p>
           </div>
-          <span class="hotel-scroll-title">Recomendados:</span>
+          <span class="hotel-scroll-title"><span class="i18n" data-en="Recommended:">Recomendados:</span></span>
           <div class="hotel-options-pills">
             <a href="https://www.booking.com/hotel/id/watermark-amp-spa-bali.html" target="_blank" class="hotel-link-chip">Watermark Hotel Jimbaran ↗</a>
             <a href="https://www.booking.com/hotel/id/novotel-bali-ngurah-rai-airport.html" target="_blank" class="hotel-link-chip">Novotel Bali Airport ↗</a>
             <a href="https://www.agoda.com/the-casa-lunamoon/hotel/bali-id.html" target="_blank" class="hotel-link-chip">The Casa Lunamoon ↗</a>
           </div>
           <a href="https://www.booking.com/hotel/id/watermark-amp-spa-bali.html" target="_blank" class="btn-book-primary">
-            Ver Hotel de Tránsito ↗
+            <span class="i18n" data-en="View Transit Hotel ↗">Ver Hotel de Tránsito ↗</span>
           </a>
         </div>
       </div>
@@ -1585,19 +1654,17 @@
     }
   }
 
-  // Audio Handler
-  const audio = document.getElementById('romantic-audio');
+  // Background Music Handler — the couple's own MP3, embedded locally
   const musicBtn = document.getElementById('music-btn');
   const musicIcon = document.getElementById('music-icon');
-  const musicText = document.getElementById('music-text');
+  const audio = document.getElementById('romantic-audio');
 
   function playRomanticAudio() {
     audio.play().then(() => {
       musicBtn.classList.add('playing');
-      musicIcon.innerText = "🎶";
-      musicText.innerText = "Música ON";
+      musicIcon.innerText = '🎶';
     }).catch(err => {
-      console.log("Audio playback waiting for direct toggle:", err);
+      console.log('Audio playback waiting for direct toggle:', err);
     });
   }
 
@@ -1605,15 +1672,73 @@
     if (audio.paused) {
       audio.play();
       musicBtn.classList.add('playing');
-      musicIcon.innerText = "🎶";
-      musicText.innerText = "Música ON";
+      musicIcon.innerText = '🎶';
     } else {
       audio.pause();
       musicBtn.classList.remove('playing');
-      musicIcon.innerText = "🎵";
-      musicText.innerText = "Música OFF";
+      musicIcon.innerText = '🎵';
     }
   }
+
+
+  // ========================================================
+  // DARK / LIGHT MODE TOGGLE
+  // ========================================================
+  const modeBtn = document.getElementById('mode-btn');
+  const modeIcon = document.getElementById('mode-icon');
+  const modeText = document.getElementById('mode-text');
+
+  function setMode(mode) {
+    document.documentElement.setAttribute('data-mode', mode);
+    if (mode === 'light') {
+      modeIcon.innerText = '☀️';
+      modeText.innerText = 'Light';
+    } else {
+      modeIcon.innerText = '🌙';
+      modeText.innerText = 'Dark';
+    }
+    try { localStorage.setItem('baliSiteMode', mode); } catch (e) {}
+  }
+
+  function toggleMode() {
+    const current = document.documentElement.getAttribute('data-mode') === 'light' ? 'light' : 'dark';
+    setMode(current === 'light' ? 'dark' : 'light');
+  }
+
+  (function initMode() {
+    let saved = null;
+    try { saved = localStorage.getItem('baliSiteMode'); } catch (e) {}
+    setMode(saved === 'light' ? 'light' : 'dark');
+  })();
+
+  // ========================================================
+  // ES / EN LANGUAGE TOGGLE
+  // ========================================================
+  const langTextEl = document.getElementById('lang-text');
+  const i18nElements = Array.from(document.querySelectorAll('.i18n'));
+  // Cache the original Spanish text once, up front, so toggling back and forth never loses it
+  i18nElements.forEach(el => { el.dataset.es = el.textContent; });
+  let currentLang = 'es';
+
+  function applyLanguage(lang) {
+    currentLang = lang;
+    i18nElements.forEach(el => {
+      el.textContent = lang === 'en' ? el.dataset.en : el.dataset.es;
+    });
+    document.documentElement.setAttribute('lang', lang);
+    langTextEl.innerText = lang === 'en' ? 'ES' : 'EN';
+    try { localStorage.setItem('baliSiteLang', lang); } catch (e) {}
+  }
+
+  function toggleLanguage() {
+    applyLanguage(currentLang === 'en' ? 'es' : 'en');
+  }
+
+  (function initLanguage() {
+    let saved = null;
+    try { saved = localStorage.getItem('baliSiteLang'); } catch (e) {}
+    applyLanguage(saved === 'en' ? 'en' : 'es');
+  })();
 
   // Live Countdown logic to 28 Sep 2026 09:00 AM
   const tripTarget = new Date('September 28, 2026 09:00:00 GMT+0800').getTime();
