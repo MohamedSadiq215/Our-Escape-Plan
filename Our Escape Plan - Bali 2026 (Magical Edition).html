@@ -1,0 +1,1836 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Our Escape plan | Bali 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Great+Vibes&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #f5c451;
+    --gold-bright: #ffe082;
+    --gold-dark: #b8860b;
+    --sand-glow: #fff8e7;
+    --door-wood-1: #1f1006;
+    --door-wood-2: #3a1e0b;
+    --door-wood-3: #120903;
+    
+    /* Dynamic Theme Defaults (Updated dynamically per day) */
+    --bg-gradient: linear-gradient(135deg, #051f18 0%, #0a3d30 50%, #135242 100%);
+    --card-bg: rgba(10, 22, 18, 0.82);
+    --card-border: rgba(245, 196, 81, 0.22);
+    --accent-color: #34d399;
+    --accent-glow: rgba(52, 211, 153, 0.35);
+    --text-main: #f8fafc;
+    --text-muted: #cbd5e1;
+    --radius-lg: 16px;
+    --radius-md: 10px;
+    --radius-sm: 6px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* ========================================================
+     PER-DAY PHOTOGRAPHIC BACKDROP — crossfading full-bleed photography
+     ======================================================== */
+  .bg-photo-layer {
+    position: fixed;
+    inset: 0;
+    z-index: -3;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 2.2s ease;
+    filter: saturate(0.9) brightness(0.62);
+  }
+  .bg-photo-layer.is-active { opacity: 1; }
+
+  .bg-tint {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background: var(--bg-gradient);
+    mix-blend-mode: multiply;
+    opacity: 0.72;
+    transition: background 1.8s ease;
+  }
+
+  .bg-vignette {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(ellipse at center, rgba(0,0,0,0) 35%, rgba(3,8,6,0.65) 100%),
+      linear-gradient(180deg, rgba(3,8,6,0.55) 0%, rgba(3,8,6,0.15) 18%, rgba(3,8,6,0.25) 70%, rgba(3,8,6,0.75) 100%);
+    pointer-events: none;
+  }
+
+  /* ========================================================
+     AMBIENT MAGIC — FIREFLIES / STARFIELD LAYER
+     ======================================================== */
+  #magic-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.9;
+  }
+
+  /* Content sits above the ambient canvas */
+  header.top-appbar, .hero-section, .day-scroll-nav, .main-itinerary-container, #door-portal {
+    position: relative;
+    z-index: 2;
+  }
+  #door-portal { z-index: 99999; }
+  .day-scroll-nav { z-index: 990; }
+  header.top-appbar { z-index: 1000; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #030805;
+    color: var(--text-main);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    padding-bottom: calc(40px + env(safe-area-inset-bottom));
+  }
+
+  h1, h2, h3, .serif-font { font-family: 'Playfair Display', Georgia, serif; }
+  .script-font { font-family: 'Great Vibes', cursive; }
+  .cinzel { font-family: 'Cinzel', serif; letter-spacing: 3px; }
+
+  /* ========================================================
+     3D GRAND BALINESE ENTRANCE DOOR OVERLAY
+     ======================================================== */
+  #door-portal {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    perspective: 1500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background: #060908;
+    transition: visibility 1.6s, opacity 1.4s ease;
+  }
+
+  .door-panel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50.5%;
+    height: 100%;
+    background:
+      repeating-linear-gradient(115deg, rgba(245,196,81,0.05) 0px, rgba(245,196,81,0.05) 1px, transparent 1px, transparent 46px),
+      linear-gradient(145deg, var(--door-wood-2), var(--door-wood-1) 55%, var(--door-wood-3));
+    box-shadow: inset 0 0 140px rgba(0,0,0,0.75), 0 0 60px rgba(0,0,0,0.9);
+    transition: transform 1.6s cubic-bezier(0.7, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(245, 196, 81, 0.4);
+  }
+
+  .door-left {
+    left: 0;
+    transform-origin: left center;
+    border-right: 1px solid rgba(245, 196, 81, 0.55);
+  }
+
+  .door-right {
+    right: 0;
+    transform-origin: right center;
+    border-left: 1px solid rgba(245, 196, 81, 0.55);
+  }
+
+  /* Fine gold inlay frame + quiet corner flourishes, in place of a busy carving texture */
+  .door-panel::before {
+    content: "";
+    position: absolute;
+    inset: 22px;
+    border: 1px solid rgba(245, 196, 81, 0.3);
+    pointer-events: none;
+  }
+  .door-panel::after {
+    content: "";
+    position: absolute;
+    inset: 34px;
+    border-top: 1px solid rgba(245, 196, 81, 0.16);
+    border-bottom: 1px solid rgba(245, 196, 81, 0.16);
+    pointer-events: none;
+  }
+
+  /* Slender brass door pull, in place of a round knocker glyph */
+  .door-knocker {
+    width: 6px;
+    height: 130px;
+    border-radius: 3px;
+    background: linear-gradient(180deg, var(--gold-bright), var(--gold) 45%, var(--gold-dark));
+    box-shadow: 0 0 18px rgba(245, 196, 81, 0.45);
+  }
+  .door-left .door-knocker { margin-left: auto; margin-right: 46px; }
+  .door-right .door-knocker { margin-right: auto; margin-left: 46px; }
+
+  /* Central Floating Invitation Card */
+  .portal-center-content {
+    position: relative;
+    z-index: 100000;
+    text-align: center;
+    padding: 46px 38px;
+    max-width: 520px;
+    width: 90%;
+    background: rgba(11, 20, 17, 0.88);
+    border: 1px solid rgba(245, 196, 81, 0.55);
+    outline: 1px solid rgba(245, 196, 81, 0.18);
+    outline-offset: 7px;
+    border-radius: 4px;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85), 0 0 60px rgba(245, 196, 81, 0.12);
+    animation: floatingGlow 6s ease-in-out infinite alternate;
+  }
+
+  @keyframes floatingGlow {
+    0% { transform: translateY(0); box-shadow: 0 30px 70px rgba(0,0,0,0.8), 0 0 40px rgba(245, 196, 81, 0.1); }
+    100% { transform: translateY(-5px); box-shadow: 0 34px 85px rgba(0,0,0,0.85), 0 0 55px rgba(245, 196, 81, 0.2); }
+  }
+
+  .ornament-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 16px auto;
+    width: 100%;
+    max-width: 220px;
+  }
+  .ornament-divider::before, .ornament-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(245, 196, 81, 0.55));
+  }
+  .ornament-divider::after { background: linear-gradient(90deg, rgba(245, 196, 81, 0.55), transparent); }
+  .ornament-divider span {
+    width: 6px;
+    height: 6px;
+    border: 1px solid var(--gold);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  .portal-tag {
+    font-size: 0.72rem;
+    color: var(--gold-bright);
+    text-transform: uppercase;
+    letter-spacing: 4.5px;
+    font-weight: 600;
+    display: block;
+  }
+
+  .portal-title {
+    font-size: clamp(2.1rem, 6.4vw, 3.1rem);
+    font-weight: 700;
+    color: #fdfaf3;
+    margin: 10px 0 2px 0;
+    line-height: 1.15;
+    letter-spacing: 0.5px;
+  }
+
+  .portal-script {
+    display: block;
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(1.7rem, 5vw, 2.3rem);
+    color: var(--gold-bright);
+    line-height: 1;
+    margin-top: 2px;
+  }
+
+  .portal-spanish-love {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(0.95rem, 2.9vw, 1.1rem);
+    color: var(--sand-glow);
+    font-style: italic;
+    line-height: 1.7;
+    margin: 18px 0 26px 0;
+    opacity: 0.92;
+  }
+
+  .btn-disappear {
+    background: transparent;
+    color: var(--gold-bright);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(0.72rem, 2vw, 0.82rem);
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 17px 28px;
+    border: 1px solid var(--gold);
+    border-radius: 2px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    transition: background 0.35s ease, color 0.35s ease, letter-spacing 0.35s ease;
+  }
+
+  .btn-disappear:hover, .btn-disappear:active {
+    background: var(--gold);
+    color: #0b1714;
+  }
+
+  .portal-subcopy {
+    margin-top: 14px;
+    font-size: 0.78rem;
+    font-style: italic;
+    color: var(--text-muted);
+    letter-spacing: 0.3px;
+  }
+
+  /* When Door Opens */
+  #door-portal.doors-opened .door-left {
+    transform: rotateY(-110deg) translateX(-30%);
+  }
+  #door-portal.doors-opened .door-right {
+    transform: rotateY(110deg) translateX(30%);
+  }
+  #door-portal.doors-opened .portal-center-content {
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    pointer-events: none;
+  }
+  #door-portal.doors-opened {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* ========================================================
+     TOP BAR & ROMANTIC AUDIO TOGGLE
+     ======================================================== */
+  header.top-appbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(8, 22, 18, 0.88);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid var(--card-border);
+    padding: 14px 20px;
+    padding-top: max(14px, env(safe-area-inset-top));
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .brand-group {
+    display: flex;
+    flex-direction: column;
+  }
+  .brand-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 800;
+    font-size: 1.25rem;
+    color: var(--gold-bright);
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+  }
+  .brand-sub {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .music-toggle-btn {
+    background: rgba(245, 196, 81, 0.12);
+    border: 1px solid var(--gold);
+    color: var(--gold-bright);
+    padding: 7px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s;
+  }
+  .music-toggle-btn.playing {
+    background: var(--gold);
+    color: #0d1f1a;
+  }
+
+  /* ========================================================
+     HERO & SPANISH ROMANTIC DEDICATION
+     ======================================================== */
+  .hero-section {
+    padding: 40px 20px 30px 20px;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .love-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    color: var(--gold-bright);
+    font-size: 0.72rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  .love-badge::before, .love-badge::after {
+    content: "";
+    width: 32px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold));
+  }
+  .love-badge::after { background: linear-gradient(90deg, var(--gold), transparent); }
+
+  .main-hero-title {
+    font-size: clamp(2.4rem, 6.5vw, 4rem);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.15;
+    margin-bottom: 18px;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+
+  .hero-spanish-quote {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: clamp(1.05rem, 3.2vw, 1.35rem);
+    color: #ffeedb;
+    line-height: 1.7;
+    margin-bottom: 25px;
+    max-width: 780px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ========================================================
+     LIVE COUNTDOWN CLOCK
+     ======================================================== */
+  .countdown-box {
+    background: rgba(13, 31, 26, 0.65);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: var(--radius-lg);
+    padding: 22px 16px;
+    margin: 20px auto 35px auto;
+    max-width: 650px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+  }
+
+  .countdown-title {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--gold);
+    font-weight: 800;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .clock-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+
+  .clock-segment {
+    background: rgba(5, 18, 14, 0.85);
+    border: 1px solid rgba(245, 196, 81, 0.3);
+    border-radius: var(--radius-md);
+    padding: 12px 6px;
+    position: relative;
+    overflow: hidden;
+  }
+  .clock-segment::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--gold-dark), var(--gold-bright));
+  }
+
+  .clock-num {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    font-weight: 800;
+    color: var(--gold-bright);
+    line-height: 1.1;
+  }
+  .clock-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    font-weight: 700;
+    margin-top: 4px;
+  }
+
+  /* ========================================================
+     ANIMATED SWIPE DOWN ARROW
+     ======================================================== */
+  .swipe-prompt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin: 20px 0 10px 0;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .swipe-text {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--gold-bright);
+    font-weight: 700;
+  }
+  .arrows-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: -4px;
+  }
+  .arrow-chevron {
+    width: 14px;
+    height: 14px;
+    border-bottom: 2.5px solid var(--gold);
+    border-right: 2.5px solid var(--gold);
+    transform: rotate(45deg);
+    animation: chevronBounce 1.6s infinite;
+  }
+  .arrow-chevron:nth-child(2) {
+    animation-delay: 0.25s;
+  }
+  .arrow-chevron:nth-child(3) {
+    animation-delay: 0.5s;
+  }
+
+  @keyframes chevronBounce {
+    0% { opacity: 0; transform: rotate(45deg) translate(-5px, -5px); }
+    50% { opacity: 1; }
+    100% { opacity: 0; transform: rotate(45deg) translate(6px, 6px); }
+  }
+
+  /* ========================================================
+     MOBILE-FRIENDLY DAY NAVIGATION PILLS
+     ======================================================== */
+  .day-scroll-nav {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 12px 20px;
+    margin-bottom: 25px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    position: sticky;
+    top: 65px;
+    z-index: 990;
+    background: rgba(6, 17, 14, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .day-scroll-nav::-webkit-scrollbar { display: none; }
+
+  .nav-day-chip {
+    white-space: nowrap;
+    background: rgba(20, 48, 40, 0.85);
+    border: 1px solid var(--card-border);
+    color: #e2e8f0;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+  }
+  .nav-day-chip.active {
+    background: var(--gold);
+    color: #0b1714;
+    border-color: var(--gold);
+    box-shadow: 0 4px 15px rgba(245, 196, 81, 0.4);
+    transform: translateY(-1px);
+  }
+
+  /* ========================================================
+     DAY CARDS LAYOUT (IPHONE OPTIMIZED)
+     ======================================================== */
+  .main-itinerary-container {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  .day-card {
+    position: relative;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    margin-bottom: 30px;
+    overflow: hidden;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+  }
+  .day-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+    opacity: 0.7;
+  }
+
+  .day-card-header {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--card-border);
+    background: rgba(255, 255, 255, 0.03);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .day-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .date-badge {
+    background: var(--gold);
+    color: #0a1714;
+    font-weight: 800;
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    letter-spacing: 0.5px;
+  }
+
+  .day-title-text h3 {
+    font-size: clamp(1.2rem, 3.5vw, 1.45rem);
+    color: #fff;
+    line-height: 1.25;
+  }
+  .day-title-text p {
+    font-size: 0.82rem;
+    color: var(--gold-bright);
+    margin-top: 2px;
+  }
+
+  .stay-phase-pill {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    padding: 4px 12px;
+    border-radius: var(--radius-sm);
+    background: rgba(245, 196, 81, 0.15);
+    border: 1px solid var(--gold);
+    color: var(--gold-bright);
+  }
+
+  .day-card-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 20px;
+    padding: 22px;
+  }
+
+  /* Activity Slot List */
+  .act-column h4, .hotel-column h4 {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--gold);
+    font-weight: 800;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Activity timeline — a quiet connecting line with a node per moment,
+     appropriate since each day really is a sequence of times */
+  .act-column {
+    position: relative;
+    padding-left: 4px;
+  }
+  .act-column::before {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 6px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(180deg, var(--gold) 0%, rgba(245, 196, 81, 0.1) 100%);
+  }
+
+  .activity-item {
+    position: relative;
+    padding: 0 0 22px 28px;
+    margin-bottom: 0;
+  }
+  .activity-item:last-child { padding-bottom: 0; }
+  .activity-item::before {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 5px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 0 3px rgba(245, 196, 81, 0.15);
+  }
+  .activity-time {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gold-bright);
+    font-weight: 700;
+  }
+  .activity-heading {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 2px 0 4px 0;
+  }
+  .activity-desc {
+    font-size: 0.84rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* Hotel Side Section */
+  .hotel-box-styled {
+    background: rgba(0, 0, 0, 0.22);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  .primary-hotel-card {
+    border-bottom: 1px solid rgba(245, 196, 81, 0.2);
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+  }
+  .primary-hotel-card h5 {
+    font-size: 1.1rem;
+    color: #ffffff;
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 6px;
+  }
+  .hotel-duration-tag {
+    display: inline-block;
+    background: rgba(52, 211, 153, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(52, 211, 153, 0.4);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    padding: 3px 9px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 8px;
+  }
+
+  .hotel-scroll-title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--gold-bright);
+    font-weight: 700;
+    margin: 10px 0 8px 0;
+    display: block;
+  }
+
+  .hotel-options-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+    max-height: 220px;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+  .hotel-options-pills::-webkit-scrollbar {
+    width: 4px;
+  }
+  .hotel-options-pills::-webkit-scrollbar-thumb {
+    background: var(--gold-dark);
+    border-radius: var(--radius-sm);
+  }
+
+  .hotel-link-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(245, 196, 81, 0.25);
+    color: #f1f5f9;
+    font-size: 0.72rem;
+    padding: 5px 10px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .hotel-link-chip:hover, .hotel-link-chip:active {
+    background: var(--gold);
+    color: #091512;
+    border-color: var(--gold);
+    font-weight: 700;
+  }
+
+  .btn-book-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+    color: #0b1714;
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.3px;
+    padding: 11px 14px;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(245, 196, 81, 0.3);
+  }
+
+  /* ========================================================
+     MAGICAL SHIMMER SWEEP — gold surfaces breathe with light
+     ======================================================== */
+  .btn-book-primary, .date-badge {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-book-primary::after, .date-badge::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -60%;
+    width: 45%;
+    height: 100%;
+    background: linear-gradient(115deg, transparent 0%, rgba(255,255,255,0.65) 50%, transparent 100%);
+    transform: skewX(-20deg);
+    animation: goldSheen 5.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+  .date-badge::after { animation-delay: 1.4s; }
+  @keyframes goldSheen {
+    0%, 30% { left: -60%; }
+    55%, 100% { left: 130%; }
+  }
+
+  /* Countdown numbers pulse softly like a heartbeat, in sync with magic */
+  .clock-segment {
+    animation: clockAura 3.2s ease-in-out infinite;
+  }
+  .clock-segment:nth-child(2) { animation-delay: 0.15s; }
+  .clock-segment:nth-child(3) { animation-delay: 0.3s; }
+  .clock-segment:nth-child(4) { animation-delay: 0.45s; }
+  @keyframes clockAura {
+    0%, 100% { box-shadow: 0 0 0 rgba(245, 196, 81, 0); }
+    50% { box-shadow: 0 0 22px rgba(245, 196, 81, 0.35); }
+  }
+
+  /* ========================================================
+     SCROLL REVEAL — each day unveils itself once, gently
+     ======================================================== */
+  .day-card.reveal-ready {
+    opacity: 0;
+    transform: translateY(36px) scale(0.98);
+    transition: opacity 0.9s cubic-bezier(0.2, 0.7, 0.3, 1), transform 0.9s cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+  .day-card.reveal-in {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  /* Hover: villas & dates glow like they're lit from within */
+  .day-card {
+    will-change: transform;
+  }
+  .day-card:hover {
+    border-color: var(--gold);
+    box-shadow: 0 25px 55px rgba(0,0,0,0.45), 0 0 40px var(--accent-glow);
+  }
+  .hotel-link-chip, .nav-day-chip {
+    position: relative;
+  }
+
+  /* ========================================================
+     DOOR-OPEN LIGHT BURST + EMBERS
+     ======================================================== */
+  .light-burst {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,235,180,0.95) 0%, rgba(245,196,81,0.6) 35%, rgba(245,196,81,0) 70%);
+    transform: translate(-50%, -50%) scale(0);
+    pointer-events: none;
+    z-index: 100001;
+  }
+  .light-burst.burst-go {
+    animation: burstOut 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes burstOut {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+    60% { opacity: 0.9; }
+    100% { transform: translate(-50%, -50%) scale(48); opacity: 0; }
+  }
+
+  .ember {
+    position: fixed;
+    bottom: -10px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--gold-bright);
+    box-shadow: 0 0 8px 2px rgba(245, 196, 81, 0.7);
+    pointer-events: none;
+    z-index: 100002;
+    animation: emberRise linear forwards;
+  }
+  @keyframes emberRise {
+    0% { transform: translateY(0) translateX(0); opacity: 1; }
+    100% { transform: translateY(-105vh) translateX(var(--drift, 40px)); opacity: 0; }
+  }
+
+  /* Responsive Adjustments for iPhone */
+  @media (max-width: 820px) {
+    .day-card-grid {
+      grid-template-columns: 1fr;
+      padding: 18px;
+      gap: 16px;
+    }
+    .main-hero-title {
+      font-size: 2.2rem;
+    }
+    .portal-title {
+      font-size: 2.2rem;
+    }
+    .day-card-header {
+      padding: 16px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- FULL-BLEED PHOTOGRAPHIC BACKDROP: crossfades to match each day -->
+<div class="bg-photo-layer" id="bg-photo-a"></div>
+<div class="bg-photo-layer" id="bg-photo-b"></div>
+<div class="bg-tint" id="bg-tint"></div>
+<div class="bg-vignette"></div>
+
+<!-- AMBIENT MAGIC LAYER: fireflies drifting over the whole journey -->
+<canvas id="magic-canvas"></canvas>
+
+<!-- AUDIO ELEMENT (Romantic Spanish Acoustic Guitar) -->
+<audio id="romantic-audio" preload="auto" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3"></audio>
+
+<!-- ========================================================
+     3D GRAND BALINESE ENTRANCE DOOR OVERLAY
+     ======================================================== -->
+<div id="door-portal">
+  <div class="door-panel door-left">
+    <div class="door-knocker">✤</div>
+  </div>
+  <div class="door-panel door-right">
+    <div class="door-knocker">✤</div>
+  </div>
+
+  <div class="light-burst" id="light-burst"></div>
+
+  <div class="portal-center-content">
+    <span class="portal-tag cinzel">A Private Invitation</span>
+    <h1 class="portal-title">Our Escape Plan<span class="portal-script">Bali, 2026</span></h1>
+    <div class="ornament-divider"><span></span></div>
+    <p class="portal-spanish-love">
+      "Un viaje inolvidable solo para nosotros dos: perdiéndonos entre las selvas sagradas de Ubud, cabalgando hacia el atardecer, soñando frente a las aguas turquesas del océano y tocando las nubes en los volcanes de Bali. Una promesa, mil recuerdos y tú."
+    </p>
+    <button class="btn-disappear" onclick="openMagicDoors()">
+      Begin the Journey
+    </button>
+    <p class="portal-subcopy">Toca para comenzar, juntos</p>
+  </div>
+</div>
+
+<!-- TOP APP BAR -->
+<header class="top-appbar">
+  <div class="brand-group">
+    <span class="brand-title">Our Escape plan</span>
+    <span class="brand-sub">28 Sep – 6 Oct 2026 • Bali</span>
+  </div>
+  <div class="header-actions">
+    <button class="music-toggle-btn" id="music-btn" onclick="toggleRomanticMusic()">
+      <span id="music-icon">🎵</span>
+      <span id="music-text">Música</span>
+    </button>
+  </div>
+</header>
+
+<!-- HERO SECTION -->
+<section class="hero-section">
+  <span class="love-badge">Solo Tú y Yo • 7 Días Mágicos</span>
+  <h1 class="main-hero-title">Nuestra Gran Aventura</h1>
+  <p class="hero-spanish-quote">
+    "Que el mundo se detenga mientras recorremos arrozales infinitos, olas que besan acantilados y noches estrelladas junto a la caldera del volcán."
+  </p>
+
+  <!-- COUNTDOWN CLOCK -->
+  <div class="countdown-box">
+    <div class="countdown-title">
+      <span>⏳</span>
+      <span>Tiempo Restante Para Nuestro Vuelo EY475</span>
+    </div>
+    <div class="clock-grid">
+      <div class="clock-segment">
+        <div class="clock-num" id="cd-days">--</div>
+        <div class="clock-label">Días</div>
+      </div>
+      <div class="clock-segment">
+        <div class="clock-num" id="cd-hours">--</div>
+        <div class="clock-label">Horas</div>
+      </div>
+      <div class="clock-segment">
+        <div class="clock-num" id="cd-minutes">--</div>
+        <div class="clock-label">Minutos</div>
+      </div>
+      <div class="clock-segment">
+        <div class="clock-num" id="cd-seconds">--</div>
+        <div class="clock-label">Segundos</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SWIPE DOWN ARROW -->
+  <a href="#day-1" class="swipe-prompt" onclick="smoothScrollTo('day-1')">
+    <span class="swipe-text">Desliza para comenzar</span>
+    <div class="arrows-container">
+      <div class="arrow-chevron"></div>
+      <div class="arrow-chevron"></div>
+      <div class="arrow-chevron"></div>
+    </div>
+  </a>
+</section>
+
+<!-- DAY NAVIGATION SCROLLBAR -->
+<div class="day-scroll-nav" id="day-nav-pills">
+  <button class="nav-day-chip active" onclick="activateDay('day-1', this)">29 Sep (Mason & Cretya)</button>
+  <button class="nav-day-chip" onclick="activateDay('day-2', this)">30 Sep (Alas Harum)</button>
+  <button class="nav-day-chip" onclick="activateDay('day-3', this)">1 Oct (Besakih & Spa)</button>
+  <button class="nav-day-chip" onclick="activateDay('day-4', this)">2 Oct (Caballos & Uluwatu)</button>
+  <button class="nav-day-chip" onclick="activateDay('day-5', this)">3 Oct (Karma Beach)</button>
+  <button class="nav-day-chip" onclick="activateDay('day-6', this)">4 Oct (Kelingking)</button>
+  <button class="nav-day-chip" onclick="activateDay('day-7', this)">5 Oct (Lunamoon & Regreso)</button>
+</div>
+
+<!-- ITINERARY MAIN FEED -->
+<main class="main-itinerary-container">
+
+  <!-- ==================== DAY 1 ==================== -->
+  <div class="day-card" id="day-1" data-theme="emerald">
+    <div class="day-card-header">
+      <div class="day-header-left">
+        <span class="date-badge">29 Sep</span>
+        <div class="day-title-text">
+          <h3>DÍA 1 • Mason Elephant Park & Cretya Sunset 🐘🌅</h3>
+          <p>Taro Sanctuary Wildlife & Golden Hour Cocktails</p>
+        </div>
+      </div>
+      <span class="stay-phase-pill">Ubud • Noche 2 de 4</span>
+    </div>
+    <div class="day-card-grid">
+      <div class="act-column">
+        <h4><span>🗓️</span> Itinerario de Hoy</h4>
+        <div class="activity-item">
+          <div class="activity-time">Mañana</div>
+          <div class="activity-heading">🐘 Mason Elephant Park & Lodge</div>
+          <div class="activity-desc">Interacción ética con elefantes rescatados en Taro, jardines botánicos tropicales y almuerzo junto al lago.</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-time">Tarde</div>
+          <div class="activity-heading">🚗 Rumbo a Tegallalang</div>
+          <div class="activity-desc">Paseo escénico entre palmeras gigantes en dirección al cañón de Cretya.</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-time">Atardecer & Noche</div>
+          <div class="activity-heading">🌅 Cretya Sunset & Cócteles</div>
+          <div class="activity-desc">Piscinas infinitas escalonadas, música lounge, vistas a las terrazas de arroz y fotos de pareja sin prisas. Regreso a la villa.</div>
+        </div>
+      </div>
+
+      <div class="hotel-column">
+        <h4><span>🏨</span> Villas Recomendadas en Ubud</h4>
+        <div class="hotel-box-styled">
+          <div class="primary-hotel-card">
+            <h5>Villa Bulan Mas / Soodama Villas</h5>
+            <span class="hotel-duration-tag">Reservar: 4 Noches (28 Sep – 2 Oct)</span>
+            <p class="activity-desc">Piscina privada 1BR, desayuno Balinés incluido (~AED 390/noche). Ubicación ideal en Tegallalang.</p>
+          </div>
+
+          <span class="hotel-scroll-title">Tus Opciones para sus 3 días:</span>
+          <div class="hotel-options-pills">
+            <a href="https://www.booking.com/searchresults.html?ss=Pinggala+Villa+Ubud" target="_blank" class="hotel-link-chip">Pinggala Villa Ubud ↗</a>
+            <a href="https://www.booking.com/searchresults.html?ss=Ubud+Suarga+Private+Pool+Villa" target="_blank" class="hotel-link-chip">Ubud Suarga Private Pool ↗</a>
+            <a href="https://www.booking.com/searchresults.html?ss=Ubud+Mayura+Private+Pool+Villa" target="_blank" class="hotel-link-chip">Ubud Mayura Private Pool ↗</a>
+            <a href="https://www.booking.com/searchresults.html?ss=Ubud+Arindra+Private+Pool+Villa" target="_blank" class="hotel-link-chip">Ubud Arindra Villa ↗</a>
+            <a href="https://www.booking.com/searchresults.html?ss=Soodama+Villas+Ubud" target="_blank" class="hotel-link-chip">Soodama Villas ↗</a>
+            <a href="https://www.booking.com/searchresults.html?ss=Tarate+Loft+Studio+Ubud" target="_blank" class="hotel-link-chip">Tarate Loft Studio ↗</a>
+            <a href="https://www.booking.com/searchresults.html?ss=The+Kayuan+Lumbur+Resort+Ubud" target="_blank" class="hotel-link-chip">The Kayuan Lumbur ↗</a>
+            <a href="https://www.booking.com/searchresults.html?ss=Ubud+River+Breeze" target="_blank" class="hotel-link-chip">Ubud River Breeze ↗</a>
+            <a href="https://www.booking.com/searchresults.html?ss=Dukuh+Sebatu+Villa" target="_blank" class="hotel-link-chip">Dukuh Sebatu Villa ↗</a>
+            <a href="https://www.booking.com/searchresults.html?ss=SUSI+Villas+Ubud" target="_blank" class="hotel-link-chip">SUSI Villas Ubud ↗</a>
+            <a href="https://www.booking.com/searchresults.html?ss=Nandikara+Villa+Ubud" target="_blank" class="hotel-link-chip">Nandikara Villa ↗</a>
+          </div>
+
+          <a href="https://www.booking.com/searchresults.html?ss=Tegallalang+Private+Pool+Villa" target="_blank" class="btn-book-primary">
+            Explorar Villas en Booking ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== DAY 2 ==================== -->
+  <div class="day-card" id="day-2" data-theme="jade">
+    <div class="day-card-header">
+      <div class="day-header-left">
+        <span class="date-badge">30 Sep</span>
+        <div class="day-title-text">
+          <h3>DÍA 2 • Alas Harum + Cretya Ubud 🌾🏊‍♀️</h3>
+          <p>Terrazas Esculpidas, Columpios Gigantes & Relax Total</p>
+        </div>
+      </div>
+      <span class="stay-phase-pill">Ubud • Noche 3 de 4</span>
+    </div>
+    <div class="day-card-grid">
+      <div class="act-column">
+        <h4><span>🗓️</span> Itinerario de Hoy</h4>
+        <div class="activity-item">
+          <div class="activity-time">Mañana</div>
+          <div class="activity-heading">🌾 Alas Harum Bali</div>
+          <div class="activity-desc">Paseo matutino por las terrazas verdes, puente de cristal y columpio de pareja sobre el valle.</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-time">Tarde</div>
+          <div class="activity-heading">🏊‍♀️ Cretya Ubud Day Club</div>
+          <div class="activity-desc">Disfrutar del club de día, camas balinesas y baños refrescantes en sus niveles de agua.</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-time">Noche</div>
+          <div class="activity-heading">🍽️ Cena Romántica en Ubud</div>
+          <div class="activity-desc">Cena relajada cerca del centro de Ubud sin prisas ni traslados pesados.</div>
+        </div>
+      </div>
+
+      <div class="hotel-column">
+        <h4><span>🏨</span> Tu Alojamiento</h4>
+        <div class="hotel-box-styled">
+          <div class="primary-hotel-card">
+            <h5>Misma Villa en Ubud</h5>
+            <span class="hotel-duration-tag">Noche 3 de 4 en la misma propiedad</span>
+            <p class="activity-desc">Sin cambios de hotel. Disfruten de la tarde y de su piscina privada sin tener que empacar maletas.</p>
+          </div>
+          <span class="hotel-scroll-title">Alternativas disponibles:</span>
+          <div class="hotel-options-pills">
+            <a href="https://www.booking.com/searchresults.html?ss=Ubud+Suarga+Private+Pool+Villa" target="_blank" class="hotel-link-chip">Ubud Suarga Villa ↗</a>
+            <a href="https://www.booking.com/searchresults.html?ss=Dukuh+Sebatu+Villa" target="_blank" class="hotel-link-chip">Dukuh Sebatu Villa ↗</a>
+            <a href="https://www.booking.com/searchresults.html?ss=Pinggala+Villa+Ubud" target="_blank" class="hotel-link-chip">Pinggala Villa ↗</a>
+            <a href="https://www.booking.com/searchresults.html?ss=SUSI+Villas+Ubud" target="_blank" class="hotel-link-chip">SUSI Villas ↗</a>
+          </div>
+          <a href="https://www.booking.com/hotel/id/komaneka-at-bisma.html" target="_blank" class="btn-book-primary">
+            Ver Detalles de la Villa ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== DAY 3 ==================== -->
+  <div class="day-card" id="day-3" data-theme="terracotta">
+    <div class="day-card-header">
+      <div class="day-header-left">
+        <span class="date-badge">1 Oct</span>
+        <div class="day-title-text">
+          <h3>DÍA 3 • Templos Sagrados: Besakih & Kehen 🛕✨</h3>
+          <p>Montañas, Cultura Milenaria & Masaje Tradicional en Pareja</p>
+        </div>
+      </div>
+      <span class="stay-phase-pill">Ubud • Última Noche</span>
+    </div>
+    <div class="day-card-grid">
+      <div class="act-column">
+        <h4><span>🗓️</span> Itinerario de Hoy</h4>
+        <div class="activity-item">
+          <div class="activity-time">Mañana</div>
+          <div class="activity-heading">🛕 Templo Madre Besakih</div>
+          <div class="activity-desc">El templo más imponente en las faldas del sagrado Monte Agung, seguido de un almuerzo panorámico.</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-time">Mediodía</div>
+          <div class="activity-heading">✨ Pura Kehen (Bangli)</div>
+          <div class="activity-desc">Escaleras de piedra tallada y árboles sagrados banyans de más de 300 años de historia.</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-time">Tarde / Noche</div>
+          <div class="activity-heading">🌸 Spa & Baño de Flores para Parejas</div>
+          <div class="activity-desc">2 horas de masaje Balinés y baño de pétalos. Empacar maletas listos para el sur.</div>
+        </div>
+      </div>
+
+      <div class="hotel-column">
+        <h4><span>🏨</span> Tu Alojamiento</h4>
+        <div class="hotel-box-styled">
+          <div class="primary-hotel-card">
+            <h5>Última Noche en Ubud</h5>
+            <span class="hotel-duration-tag">Check-out mañana 2 de Octubre</span>
+            <p class="activity-desc">Descansen profundamente. Mañana comienza tu etapa especial del viaje rumbo a Uluwatu con caballos.</p>
+          </div>
+          <span class="hotel-scroll-title">Otras opciones en Ubud:</span>
+          <div class="hotel-options-pills">
+            <a href="https://www.booking.com/searchresults.html?ss=Ubud+Mayura+Private+Pool+Villa" target="_blank" class="hotel-link-chip">Ubud Mayura ↗</a>
+            <a href="https://www.booking.com/searchresults.html?ss=Nandikara+Villa+Ubud" target="_blank" class="hotel-link-chip">Nandikara Villa ↗</a>
+            <a href="https://www.booking.com/searchresults.html?ss=The+Kayuan+Lumbur+Resort+Ubud" target="_blank" class="hotel-link-chip">The Kayuan Lumbur ↗</a>
+          </div>
+          <a href="https://www.booking.com/searchresults.html?ss=Ubud+Villas" target="_blank" class="btn-book-primary">
+            Confirmar Reserva ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== DAY 4 ==================== -->
+  <div class="day-card" id="day-4" data-theme="sunset">
+    <div class="day-card-header">
+      <div class="day-header-left">
+        <span class="date-badge" style="background: #ff9800; color: #000;">2 Oct</span>
+        <div class="day-title-text">
+          <h3>YOUR DAY 1 • Paseo a Caballo & Rumbo a Uluwatu 🐎❤️</h3>
+          <p>Arrozales → Campo Balinés → Playa al Atardecer → Villa en el Sur</p>
+        </div>
+      </div>
+      <span class="stay-phase-pill" style="border-color: #ff9800; color: #ffb74d;">Uluwatu • Noche 1 de 3</span>
+    </div>
+    <div class="day-card-grid">
+      <div class="act-column">
+        <h4><span>🗓️</span> Tu Día Especial</h4>
+        <div class="activity-item" style="border-left-color: #ff9800;">
+          <div class="activity-time">Mañana</div>
+          <div class="activity-heading">☕ Desayuno & Check-out de Ubud</div>
+          <div class="activity-desc">Salida con el chofer privado y equipaje en el auto rumbo a la costa.</div>
+        </div>
+        <div class="activity-item" style="border-left-color: #ff9800;">
+          <div class="activity-time">Tarde Destacada</div>
+          <div class="activity-heading">🐎 Paseo a Caballo Campiña y Playa</div>
+          <div class="activity-desc">Paseo romántico a caballo cruzando arrozales y aldeas tradicionales hasta salir a la playa en pleno atardecer.</div>
+        </div>
+        <div class="activity-item" style="border-left-color: #ff9800;">
+          <div class="activity-time">Noche</div>
+          <div class="activity-heading">🏨 Check-in en Uluwatu & Cena</div>
+          <div class="activity-desc">Llegada a tu villa en el sur de Bali (Pecatu / Bingin) y cena íntima.</div>
+        </div>
+      </div>
+
+      <div class="hotel-column">
+        <h4><span>🏝️</span> Hoteles Seleccionados para Ti</h4>
+        <div class="hotel-box-styled">
+          <div class="primary-hotel-card">
+            <h5>ONAYA Bali Resort / PinkCoco</h5>
+            <span class="hotel-duration-tag">Reservar: 3 Noches (2 Oct – 5 Oct)</span>
+            <p class="activity-desc">Objetivo: AED 250–500/noche. Estilo boutique romántico, cerca de Karma Beach y los mejores acantilados.</p>
+          </div>
+
+          <span class="hotel-scroll-title">Tus 4 Opciones para tus días:</span>
+          <div class="hotel-options-pills">
+            <a href="https://www.booking.com/searchresults.html?ss=ONAYA+Bali+Resort" target="_blank" class="hotel-link-chip" style="border-color: #ffb74d;">ONAYA Bali Resort ↗</a>
+            <a href="https://www.booking.com/searchresults.html?ss=Swiss-Belresort+Pecatu" target="_blank" class="hotel-link-chip" style="border-color: #ffb74d;">Swiss-Belresort Pecatu ↗</a>
+            <a href="https://www.booking.com/searchresults.html?ss=PinkCoco+Uluwatu" target="_blank" class="hotel-link-chip" style="border-color: #ffb74d;">PinkCoco Uluwatu ↗</a>
+            <a href="https://www.booking.com/searchresults.html?ss=Terra+Cottages+Bali" target="_blank" class="hotel-link-chip" style="border-color: #ffb74d;">Terra Cottages ↗</a>
+          </div>
+
+          <a href="https://www.booking.com/searchresults.html?ss=Uluwatu+Boutique+Hotels" target="_blank" class="btn-book-primary" style="background: linear-gradient(135deg, #ffb74d, #ff9800);">
+            Ver Opciones de Uluwatu ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== DAY 5 ==================== -->
+  <div class="day-card" id="day-5" data-theme="azure">
+    <div class="day-card-header">
+      <div class="day-header-left">
+        <span class="date-badge" style="background: #00bcd4; color: #000;">3 Oct</span>
+        <div class="day-title-text">
+          <h3>YOUR DAY 2 • Karma Beach & Lujo Lento 🏖️❤️</h3>
+          <p>Funicular al Acantilado, Aguas Turquesas & Atardecer Privado</p>
+        </div>
+      </div>
+      <span class="stay-phase-pill" style="border-color: #00bcd4; color: #80deea;">Uluwatu • Noche 2 de 3</span>
+    </div>
+    <div class="day-card-grid">
+      <div class="act-column">
+        <h4><span>🗓️</span> Tu Día de Playa</h4>
+        <div class="activity-item" style="border-left-color: #00bcd4;">
+          <div class="activity-time">Mañana</div>
+          <div class="activity-heading">😴 Dormir Hasta Tarde & Piscina</div>
+          <div class="activity-desc">Despertar sin alarmas, café con calma y piscina privada en la villa.</div>
+        </div>
+        <div class="activity-item" style="border-left-color: #00bcd4;">
+          <div class="activity-time">Tarde</div>
+          <div class="activity-heading">🏖️ Karma Beach Club</div>
+          <div class="activity-desc">Bajada en teleférico privado a la cala secreta. Aguas cristalinas, tumbonas, cócteles y fotos en la arena.</div>
+        </div>
+        <div class="activity-item" style="border-left-color: #00bcd4;">
+          <div class="activity-time">Atardecer & Noche</div>
+          <div class="activity-heading">🌅 Atardecer Dorado & Cena Playera</div>
+          <div class="activity-desc">Cena romántica frente a las olas y regreso temprano para descansar para Kelingking.</div>
+        </div>
+      </div>
+
+      <div class="hotel-column">
+        <h4><span>🏨</span> Tu Alojamiento</h4>
+        <div class="hotel-box-styled">
+          <div class="primary-hotel-card">
+            <h5>Misma Base en Uluwatu</h5>
+            <span class="hotel-duration-tag">Noche 2 de 3 (Sin traslados)</span>
+            <p class="activity-desc">Regresen temprano después del atardecer. Mañana Nusa Penida requiere salir temprano.</p>
+          </div>
+          <span class="hotel-scroll-title">Tus Hoteles en el Sur:</span>
+          <div class="hotel-options-pills">
+            <a href="https://www.booking.com/searchresults.html?ss=PinkCoco+Uluwatu" target="_blank" class="hotel-link-chip">PinkCoco Uluwatu ↗</a>
+            <a href="https://www.booking.com/searchresults.html?ss=ONAYA+Bali+Resort" target="_blank" class="hotel-link-chip">ONAYA Bali Resort ↗</a>
+            <a href="https://www.booking.com/searchresults.html?ss=Terra+Cottages+Bali" target="_blank" class="hotel-link-chip">Terra Cottages ↗</a>
+            <a href="https://www.booking.com/searchresults.html?ss=Swiss-Belresort+Pecatu" target="_blank" class="hotel-link-chip">Swiss-Belresort ↗</a>
+          </div>
+          <a href="https://www.booking.com/searchresults.html?ss=Uluwatu+Boutique+Hotels" target="_blank" class="btn-book-primary">
+            Ver Mi Hotel en Uluwatu ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== DAY 6 ==================== -->
+  <div class="day-card" id="day-6" data-theme="ocean">
+    <div class="day-card-header">
+      <div class="day-header-left">
+        <span class="date-badge" style="background: #0288d1; color: #fff;">4 Oct</span>
+        <div class="day-title-text">
+          <h3>YOUR DAY 3 • Kelingking Beach / Nusa Penida 🦖🌊</h3>
+          <p>Lancha Rápida, Acantilado T-Rex, Broken Beach & Piscinas Naturales</p>
+        </div>
+      </div>
+      <span class="stay-phase-pill" style="border-color: #0288d1; color: #81d4fa;">Uluwatu • Noche 3 de 3</span>
+    </div>
+    <div class="day-card-grid">
+      <div class="act-column">
+        <h4><span>🗓️</span> Tu Gran Aventura</h4>
+        <div class="activity-item" style="border-left-color: #0288d1;">
+          <div class="activity-time">06:00 AM</div>
+          <div class="activity-heading">🚤 Cruce en Lancha Rápida desde Sanur</div>
+          <div class="activity-desc">Traslado privado y navegación de 40 minutos a Nusa Penida con 4x4 esperándolos.</div>
+        </div>
+        <div class="activity-item" style="border-left-color: #0288d1;">
+          <div class="activity-time">Mañana Imprescindible</div>
+          <div class="activity-heading">🏝️ Mirador de Kelingking Beach</div>
+          <div class="activity-desc">La postal más icónica del mundo. Disfrutar de los miradores superiores sin bajar el peligroso sendero.</div>
+        </div>
+        <div class="activity-item" style="border-left-color: #0288d1;">
+          <div class="activity-time">Tarde</div>
+          <div class="activity-heading">💧 Broken Beach & Angel's Billabong</div>
+          <div class="activity-desc">Arcos naturales de roca caliza y lagunas marinas antes del barco de regreso a las 16:30.</div>
+        </div>
+      </div>
+
+      <div class="hotel-column">
+        <h4><span>🏨</span> Tu Alojamiento</h4>
+        <div class="hotel-box-styled">
+          <div class="primary-hotel-card">
+            <h5>Última Noche en Uluwatu</h5>
+            <span class="hotel-duration-tag">Check-out mañana 5 de Octubre</span>
+            <p class="activity-desc">Cena sencilla, descanso profundo. Mañana salimos con maletas hacia el volcán en Kintamani.</p>
+          </div>
+          <span class="hotel-scroll-title">Tus opciones preferidas:</span>
+          <div class="hotel-options-pills">
+            <a href="https://www.booking.com/searchresults.html?ss=ONAYA+Bali+Resort" target="_blank" class="hotel-link-chip">ONAYA Resort ↗</a>
+            <a href="https://www.booking.com/searchresults.html?ss=Terra+Cottages+Bali" target="_blank" class="hotel-link-chip">Terra Cottages ↗</a>
+          </div>
+          <a href="https://www.booking.com/searchresults.html?ss=Uluwatu+Hotels" target="_blank" class="btn-book-primary">
+            Ver Mi Reserva en Uluwatu ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== DAY 7 ==================== -->
+  <div class="day-card" id="day-7" data-theme="volcano" style="border: 2px solid var(--gold);">
+    <div class="day-card-header" style="background: rgba(245, 196, 81, 0.08);">
+      <div class="day-header-left">
+        <span class="date-badge" style="background: #9c27b0; color: #fff;">5–6 Oct</span>
+        <div class="day-title-text">
+          <h3>YOUR DAY 4 • Kintamani + LUNAMOON & Regreso 🌋🍽️</h3>
+          <p>Vistas al Volcán Batur → Restaurante Lunamoon → Tránsito al Aeropuerto</p>
+        </div>
+      </div>
+      <span class="stay-phase-pill" style="border-color: #ba68c8; color: #e1bee7;">Tránsito Final</span>
+    </div>
+    <div class="day-card-grid">
+      <div class="act-column">
+        <h4><span>🗓️</span> El Gran Cierre del Viaje</h4>
+        <div class="activity-item" style="border-left-color: #9c27b0;">
+          <div class="activity-time">09:00 AM</div>
+          <div class="activity-heading">🚗 Uluwatu → Kintamani con Maletas</div>
+          <div class="activity-desc">Equipaje en el auto privado; ascenso hacia la cordillera fresca del cráter de Batur[cite: 1].</div>
+        </div>
+        <div class="activity-item" style="border-left-color: #9c27b0;">
+          <div class="activity-time">12:30 – 15:30 Destacado</div>
+          <div class="activity-heading">🍽️ Restaurante LUNAMOON Kintamani</div>
+          <div class="activity-desc">Ubicado en la cresta de Penelokan con vistas panorámicas al volcán y lago[cite: 1]. Comida Thai/Asiática y cafés de altura[cite: 1].</div>
+        </div>
+        <div class="activity-item" style="border-left-color: #9c27b0;">
+          <div class="activity-time">18:00 – 22:00</div>
+          <div class="activity-heading">🚗 Jimbaran: Ducha, Masaje & Cena</div>
+          <div class="activity-desc">Hotel de tránsito en Jimbaran/Tuban[cite: 1]. Ducha caliente, masaje previo al vuelo y cena de mariscos en la playa[cite: 1].</div>
+        </div>
+        <div class="activity-item" style="border-left-color: #9c27b0;">
+          <div class="activity-time">01:30 AM (6 Oct)</div>
+          <div class="activity-heading">✈️ Vuelo Directo a Abu Dhabi</div>
+          <div class="activity-desc">Check-in cómodo en el aeropuerto DPS a las 22:30[cite: 1]. Vuelo directo a casa con el corazón lleno de recuerdos[cite: 1].</div>
+        </div>
+      </div>
+
+      <div class="hotel-column">
+        <h4><span>🛏️</span> Hotel de Tránsito (Última Noche)</h4>
+        <div class="hotel-box-styled" style="border-color: var(--gold);">
+          <div class="primary-hotel-card">
+            <h5>Hotel de Tránsito (Jimbaran / Tuban)</h5>
+            <span class="hotel-duration-tag" style="background: rgba(245, 196, 81, 0.2); color: var(--gold-bright);">Presupuesto: AED 150–300</span>
+            <p class="activity-desc">A 10 min del aeropuerto DPS[cite: 1]. Ideal para ducharse, cambiarse y descansar antes de abordar el vuelo de la 01:30 AM[cite: 1].</p>
+          </div>
+          <span class="hotel-scroll-title">Recomendados:</span>
+          <div class="hotel-options-pills">
+            <a href="https://www.booking.com/hotel/id/watermark-amp-spa-bali.html" target="_blank" class="hotel-link-chip">Watermark Hotel Jimbaran ↗</a>
+            <a href="https://www.booking.com/hotel/id/novotel-bali-ngurah-rai-airport.html" target="_blank" class="hotel-link-chip">Novotel Bali Airport ↗</a>
+            <a href="https://www.agoda.com/the-casa-lunamoon/hotel/bali-id.html" target="_blank" class="hotel-link-chip">The Casa Lunamoon ↗</a>
+          </div>
+          <a href="https://www.booking.com/hotel/id/watermark-amp-spa-bali.html" target="_blank" class="btn-book-primary">
+            Ver Hotel de Tránsito ↗
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  // Dynamic color palettes for each day
+  const themes = {
+    emerald: {
+      photo: "https://images.unsplash.com/photo-1555400038-63f5ba517a47?auto=format&fit=crop&w=1800&q=75",
+      gradient: "linear-gradient(135deg, rgba(5,31,24,0.9) 0%, rgba(10,61,48,0.55) 50%, rgba(19,82,66,0.4) 100%)",
+      accent: "#34d399",
+      glow: "rgba(52, 211, 153, 0.35)",
+      border: "rgba(52, 211, 153, 0.3)"
+    },
+    jade: {
+      photo: "https://images.unsplash.com/photo-1513415756790-2ac1db1297d0?auto=format&fit=crop&w=1800&q=75",
+      gradient: "linear-gradient(135deg, rgba(9,48,40,0.9) 0%, rgba(23,84,63,0.55) 50%, rgba(34,115,87,0.4) 100%)",
+      accent: "#10b981",
+      glow: "rgba(16, 185, 129, 0.35)",
+      border: "rgba(16, 185, 129, 0.3)"
+    },
+    terracotta: {
+      photo: "https://images.unsplash.com/photo-1593938637267-7d70420742a3?auto=format&fit=crop&w=1800&q=75",
+      gradient: "linear-gradient(135deg, rgba(43,17,8,0.9) 0%, rgba(84,34,17,0.55) 50%, rgba(125,51,25,0.4) 100%)",
+      accent: "#f97316",
+      glow: "rgba(249, 115, 22, 0.35)",
+      border: "rgba(249, 115, 22, 0.3)"
+    },
+    sunset: {
+      photo: "https://images.unsplash.com/photo-1598751240191-fbe4a9a30e02?auto=format&fit=crop&w=1800&q=75",
+      gradient: "linear-gradient(135deg, rgba(61,20,3,0.9) 0%, rgba(124,45,11,0.55) 50%, rgba(180,83,9,0.4) 100%)",
+      accent: "#fb923c",
+      glow: "rgba(251, 146, 60, 0.35)",
+      border: "rgba(251, 146, 60, 0.3)"
+    },
+    azure: {
+      photo: "https://images.unsplash.com/photo-1661085942912-893b3f1f781a?auto=format&fit=crop&w=1800&q=75",
+      gradient: "linear-gradient(135deg, rgba(3,37,57,0.9) 0%, rgba(7,80,121,0.55) 50%, rgba(14,116,144,0.4) 100%)",
+      accent: "#38bdf8",
+      glow: "rgba(56, 189, 248, 0.35)",
+      border: "rgba(56, 189, 248, 0.3)"
+    },
+    ocean: {
+      photo: "https://images.unsplash.com/photo-1559305289-4c31700ba9cb?auto=format&fit=crop&w=1800&q=75",
+      gradient: "linear-gradient(135deg, rgba(2,23,43,0.9) 0%, rgba(7,59,100,0.55) 50%, rgba(3,105,161,0.4) 100%)",
+      accent: "#0ea5e9",
+      glow: "rgba(14, 165, 233, 0.35)",
+      border: "rgba(14, 165, 233, 0.3)"
+    },
+    volcano: {
+      photo: "https://images.unsplash.com/photo-1693821876313-dc573a92028c?auto=format&fit=crop&w=1800&q=75",
+      gradient: "linear-gradient(135deg, rgba(30,9,43,0.9) 0%, rgba(76,29,99,0.55) 50%, rgba(124,45,138,0.4) 100%)",
+      accent: "#c084fc",
+      glow: "rgba(192, 132, 252, 0.35)",
+      border: "rgba(192, 132, 252, 0.3)"
+    }
+  };
+
+  // Preload every day's photograph once, up front, so crossfades never pop in late
+  const preloadedPhotos = new Set();
+  function preloadThemePhotos() {
+    Object.values(themes).forEach(t => {
+      if (preloadedPhotos.has(t.photo)) return;
+      preloadedPhotos.add(t.photo);
+      const img = new Image();
+      img.src = t.photo;
+    });
+  }
+  preloadThemePhotos();
+
+  // Crossfade between the two fixed photo layers, ping-ponging which is "active"
+  let activeBgLayer = 'a';
+  let currentThemeKey = null;
+
+  // Open Doors Animation & Start Audio
+  function openMagicDoors() {
+    const portal = document.getElementById('door-portal');
+    const burst = document.getElementById('light-burst');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!reduceMotion) {
+      burst.classList.add('burst-go');
+      spawnEmbers(26);
+    }
+    portal.classList.add('doors-opened');
+
+    // Start background music via user gesture
+    playRomanticAudio();
+  }
+
+  // Golden embers that drift upward through the whole page once the doors open
+  function spawnEmbers(count) {
+    for (let i = 0; i < count; i++) {
+      setTimeout(() => {
+        const ember = document.createElement('div');
+        ember.className = 'ember';
+        const startX = Math.random() * window.innerWidth;
+        const drift = (Math.random() - 0.5) * 160;
+        const duration = 3 + Math.random() * 2.5;
+        const size = 3 + Math.random() * 4;
+        ember.style.left = startX + 'px';
+        ember.style.width = size + 'px';
+        ember.style.height = size + 'px';
+        ember.style.setProperty('--drift', drift + 'px');
+        ember.style.animationDuration = duration + 's';
+        document.body.appendChild(ember);
+        setTimeout(() => ember.remove(), duration * 1000 + 200);
+      }, i * 45);
+    }
+  }
+
+  // Audio Handler
+  const audio = document.getElementById('romantic-audio');
+  const musicBtn = document.getElementById('music-btn');
+  const musicIcon = document.getElementById('music-icon');
+  const musicText = document.getElementById('music-text');
+
+  function playRomanticAudio() {
+    audio.play().then(() => {
+      musicBtn.classList.add('playing');
+      musicIcon.innerText = "🎶";
+      musicText.innerText = "Música ON";
+    }).catch(err => {
+      console.log("Audio playback waiting for direct toggle:", err);
+    });
+  }
+
+  function toggleRomanticMusic() {
+    if (audio.paused) {
+      audio.play();
+      musicBtn.classList.add('playing');
+      musicIcon.innerText = "🎶";
+      musicText.innerText = "Música ON";
+    } else {
+      audio.pause();
+      musicBtn.classList.remove('playing');
+      musicIcon.innerText = "🎵";
+      musicText.innerText = "Música OFF";
+    }
+  }
+
+  // Live Countdown logic to 28 Sep 2026 09:00 AM
+  const tripTarget = new Date('September 28, 2026 09:00:00 GMT+0800').getTime();
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = tripTarget - now;
+
+    if (distance <= 0) {
+      document.getElementById('cd-days').innerText = "00";
+      document.getElementById('cd-hours').innerText = "00";
+      document.getElementById('cd-minutes').innerText = "00";
+      document.getElementById('cd-seconds').innerText = "00";
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById('cd-days').innerText = String(days).padStart(2, '0');
+    document.getElementById('cd-hours').innerText = String(hours).padStart(2, '0');
+    document.getElementById('cd-minutes').innerText = String(minutes).padStart(2, '0');
+    document.getElementById('cd-seconds').innerText = String(seconds).padStart(2, '0');
+  }
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
+
+  // Set the very first backdrop so the entrance already feels like Bali, not a blank void
+  applyTheme('emerald');
+
+  // Scroll to Day & Update Theme
+  function smoothScrollTo(id) {
+    const target = document.getElementById(id);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  function activateDay(dayId, btnElement) {
+    document.querySelectorAll('.nav-day-chip').forEach(el => el.classList.remove('active'));
+    btnElement.classList.add('active');
+
+    const card = document.getElementById(dayId);
+    if (card) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      applyTheme(card.dataset.theme);
+    }
+  }
+
+  function applyTheme(themeKey) {
+    const t = themes[themeKey];
+    if (!t || themeKey === currentThemeKey) return;
+    currentThemeKey = themeKey;
+
+    document.documentElement.style.setProperty('--card-border', t.border);
+    document.documentElement.style.setProperty('--accent-color', t.accent);
+    document.documentElement.style.setProperty('--accent-glow', t.glow);
+    document.getElementById('bg-tint').style.background = t.gradient;
+
+    // Ping-pong crossfade: paint the hidden layer, then swap which is visible
+    const showId = activeBgLayer === 'a' ? 'bg-photo-b' : 'bg-photo-a';
+    const hideId = activeBgLayer === 'a' ? 'bg-photo-a' : 'bg-photo-b';
+    const showLayer = document.getElementById(showId);
+    const hideLayer = document.getElementById(hideId);
+
+    showLayer.style.backgroundImage = `url("${t.photo}")`;
+    showLayer.classList.add('is-active');
+    hideLayer.classList.remove('is-active');
+    activeBgLayer = activeBgLayer === 'a' ? 'b' : 'a';
+  }
+
+  // IntersectionObserver to change website background automatically as user scrolls
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const theme = entry.target.dataset.theme;
+        applyTheme(theme);
+
+        // sync top chip
+        const id = entry.target.id;
+        document.querySelectorAll('.nav-day-chip').forEach(chip => {
+          if (chip.getAttribute('onclick').includes(id)) {
+            chip.classList.add('active');
+            chip.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          } else {
+            chip.classList.remove('active');
+          }
+        });
+      }
+    });
+  }, { threshold: 0.55 });
+
+  document.querySelectorAll('.day-card').forEach(card => observer.observe(card));
+
+  // ========================================================
+  // SCROLL REVEAL — each day card unveils itself once, gently
+  // ========================================================
+  const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  if (!reduceMotionQuery.matches) {
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('reveal-in');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.day-card').forEach(card => {
+      card.classList.add('reveal-ready');
+      revealObserver.observe(card);
+    });
+  }
+
+  // ========================================================
+  // AMBIENT MAGIC — drifting fireflies over a soft starfield
+  // ========================================================
+  (function magicCanvas() {
+    const canvas = document.getElementById('magic-canvas');
+    const ctx = canvas.getContext('2d');
+    let w, h, dpr;
+    let stars = [];
+    let fireflies = [];
+
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      seed();
+    }
+
+    function seed() {
+      const starCount = Math.min(90, Math.floor((w * h) / 15000));
+      stars = Array.from({ length: starCount }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h * 0.6,
+        r: Math.random() * 1.3 + 0.3,
+        phase: Math.random() * Math.PI * 2,
+        speed: 0.3 + Math.random() * 0.6
+      }));
+
+      const fireflyCount = window.innerWidth < 700 ? 14 : 24;
+      fireflies = Array.from({ length: fireflyCount }, () => spawnFirefly());
+    }
+
+    function spawnFirefly() {
+      return {
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: 1.2 + Math.random() * 1.8,
+        vx: (Math.random() - 0.5) * 0.18,
+        vy: (Math.random() - 0.5) * 0.18,
+        phase: Math.random() * Math.PI * 2,
+        speed: 0.015 + Math.random() * 0.02
+      };
+    }
+
+    function tick(t) {
+      ctx.clearRect(0, 0, w, h);
+
+      // Twinkling stars
+      stars.forEach(s => {
+        const twinkle = 0.35 + 0.65 * Math.abs(Math.sin(t * 0.001 * s.speed + s.phase));
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(248, 250, 252, ${twinkle * 0.55})`;
+        ctx.fill();
+      });
+
+      // Drifting golden fireflies
+      fireflies.forEach(f => {
+        f.x += f.vx;
+        f.y += f.vy;
+        f.phase += f.speed;
+
+        if (f.x < -20) f.x = w + 20;
+        if (f.x > w + 20) f.x = -20;
+        if (f.y < -20) f.y = h + 20;
+        if (f.y > h + 20) f.y = -20;
+
+        const glow = 0.4 + 0.6 * Math.abs(Math.sin(f.phase));
+        const grad = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r * 5);
+        grad.addColorStop(0, `rgba(255, 224, 130, ${glow * 0.9})`);
+        grad.addColorStop(1, 'rgba(255, 224, 130, 0)');
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r * 5, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r * 0.6, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 248, 220, ${glow})`;
+        ctx.fill();
+      });
+
+      requestAnimationFrame(tick);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    if (!reduceMotionQuery.matches) {
+      requestAnimationFrame(tick);
+    } else {
+      // Reduced motion: draw a single calm static frame, no loop
+      tick(0);
+    }
+  })();
+</script>
+
+</body>
+</html>
